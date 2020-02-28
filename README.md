@@ -1,0 +1,2 @@
+# QuickCard.Api
+Api quickcard
