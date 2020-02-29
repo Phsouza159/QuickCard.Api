@@ -1,50 +1,28 @@
-const express = require('express')
+const alias = require('module-alias/register')
+    , express = require('express')
     , bodyParser = require('body-parser')
-    , app = express()
-    , swagger = require("swagger-node-express")
-    , swaggerUi = require('swagger-ui-express')
-    , expressSwagger = require('express-swagger-generator')
-    , options = {
-        swaggerDefinition: {
-            info: {
-                description: 'This is a sample server',
-                title: 'Swagger',
-                version: '2.0.0',
-            },
-            host: 'localhost:3000',
-            basePath: '/v1',
-            produces: [
-                "application/json",
-                "application/xml"
-            ],
-            schemes: ['http', 'https'],
-            securityDefinitions: {
-                JWT: {
-                    type: 'apiKey',
-                    in: 'header',
-                    name: 'Authorization',
-                    description: "",
-                }
-            }
-        },
-        basedir: __dirname, //app absolute path
-        //Path to the API handle folder
-        files: [
-            './app/controllers/**/*.js'
-            ,'./app/models/**/*.js'
-        ]
-    };
+    , registreSwegger = require('./config/swegger.config')
+    , fs = require('fs')
+    , pathController = `${__dirname}/app/controllers`
+    , portServer = 3000
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+var server = ( async (app) => {
 
-require('./app/controllers/registroEstudante')(app);
-require('./app/controllers/crudEstudante')(app);
-require('./app/controllers/crudAnotacao')(app);
-require('./app/controllers/crudBlocoAnotacao')(app);
-require('./app/controllers/crudBlocoCartao')(app);
-require('./app/controllers/crudCartao')(app);
+    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: false }))
 
-app.listen(3000);
-expressSwagger(app)(options)
-//swagger.setAppHandler(app);
+    const controllers = await fs.readdirSync(pathController)
+    
+    controllers.map( controller => {
+        if(controller.includes('.js'))
+            require(`${pathController}/${controller}`)(app)
+    })
+
+    app.listen(portServer)
+    registreSwegger(app)
+
+    console.info(`Server listen on port ${portServer}`)
+
+    return app
+
+})(express())

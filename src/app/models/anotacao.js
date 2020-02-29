@@ -2,6 +2,7 @@ const mongoose = require('../../database');
 
 var Schema = mongoose.Schema,
 ObjectId = Schema.ObjectId;
+
 /**
  * @typedef Anotacao
  * @property {String} id_estudante - id estudante 
