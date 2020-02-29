@@ -10,7 +10,8 @@ const express = require('express')
 var noteController = ( (app) => {
 
   // authentication
-  //router.use(authMiddleware);
+  if(!pathNote.allowanonymous)
+    router.use(authMiddleware);
 
   //#region OnGet
 

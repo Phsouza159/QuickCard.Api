@@ -1,4 +1,5 @@
 const express = require('express')
+ , authMiddleware = require('@middlewares/autenticacao')
  , Note = require('@models/note.js')
  , codHttp = require('@enum/codHttp')
  , router = express.Router()
@@ -6,6 +7,10 @@ const express = require('express')
  , pathlogin = pathRoute.v1.login
 
  const loginController = ( (app) => {
+
+    // authentication
+    if(!pathlogin.allowanonymous)
+        router.use(authMiddleware);
 
     //#region OnPost
 
