@@ -29,5 +29,34 @@ module.exports = {
             ,delete : '/:id'
         } ,
 
+        notePad : {
+            allowanonymous : true,
+            base: `${baseApi}/v1/notepad` 
+            ,get : '/' 
+            ,getById : '/:id' 
+            ,post : '/'
+            ,put : '/:id'
+            ,delete : '/:id'
+        } ,
+
+        deck : {
+            allowanonymous : true,
+            base: `${baseApi}/v1/deck` 
+            ,get : '/' 
+            ,getById : '/:id' 
+            ,post : '/'
+            ,put : '/:id'
+            ,delete : '/:id'
+        } ,
+
+        card : {
+            allowanonymous : true,
+            base: `${baseApi}/v1/deck` 
+            ,get : '/' 
+            ,getById : '/:id' 
+            ,post : '/'
+            ,put : '/:id'
+            ,delete : '/:id'     
+        }
     }
 }
