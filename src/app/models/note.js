@@ -1,16 +1,15 @@
-const mongoose = require('../../database');
-
-var Schema = mongoose.Schema,
-ObjectId = Schema.ObjectId;
+const mongoose = require('@dataBase')
+    , Schema = mongoose.Schema 
+    , ObjectId = Schema.ObjectId
 
 /**
- * @typedef Anotacao
+ * @typedef Note
  * @property {String} id_estudante - id estudante 
  * @property {String} id_bloco_anotacao - id bloco anotacao 
  * @property {String} nome - nome anotacao 
  * @property {String} conteudo - conteudo anotacao 
  */
-const AnotacaoSchema = new mongoose.Schema({
+const NoteSchema = new mongoose.Schema({
     id_estudante: {
         type: ObjectId,
         require: true,
@@ -29,6 +28,6 @@ const AnotacaoSchema = new mongoose.Schema({
     }
 });
 
-const Anotacao = mongoose.model('Anotacao', AnotacaoSchema);
+const Note = mongoose.model('Note', NoteSchema);
 
-module.exports = Anotacao;
+module.exports = Note;

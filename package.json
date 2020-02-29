@@ -27,6 +27,7 @@
     "@middlewares" : "./src/app/middlewares",
     "@models" : "./src/app/models",
     "@config" : "./src/config",
-    "@enum" : "./src/app/enum"
+    "@enum" : "./src/app/enum",
+    "@dataBase" : "./src/database/index.js"
   }
 }
