@@ -1,14 +1,19 @@
 const express = require('express')
- , authMiddleware = require('@middlewares/autenticacao')
- , codHttp = require('@enum/codHttp')
- , router = express.Router()
- , pathRoute = require('@config/router.js')
- , pathStudent = pathRoute.v1.student
- 
-const studentController = ( (app) => {
-   
+    , Student = require('@models/student')
+    , base = require('./baseController')
+    , authMiddleware = require('@middlewares/autenticacao')
+    , BadRequestResponse = require('@response/badRequestResponse')
+    , generetToken = require('@service/generetToken')
+    , codHttp = require('@enum/codHttp')
+    , pathRoute = require('@config/router.js')
+    , StudentCreateResponse = require('@response/studentCreateResponse')
+    , router = express.Router()
+    , pathStudent = pathRoute.v1.student
+
+const studentController = ((app) => {
+
     // authentication
-    if(!pathStudent.allowanonymous)
+    if (!pathStudent.allowanonymous)
         router.use(authMiddleware);
 
     //#region OnGet
@@ -19,7 +24,7 @@ const studentController = ( (app) => {
      * @group student - Retrieve students
      * @operationId retrieveStudentnfo
      * @produces application/json
-     * @returns {Array<Note>} 200 - List object note
+     * @returns {Array<Student>} 200 - List object note
      * @returns {BadRequestResponse.model} 400 - Object bad request
      * @returns {object} 401 - Object authorization required
      * @returns {object} 500 - Objeto internal Serve Erro
@@ -27,20 +32,17 @@ const studentController = ( (app) => {
      */
     router.get(`${pathStudent.get}`, async (req, res) => {
         try {
-        
-        return res.send({ mensagem : "ok get" });
 
-        // const anotacao = await Anotacao.find();
-        // return res.send({ anotacao });
-        
+            const studentList = await Student.find()
+            return res.send(studentList)
+
         } catch (err) {
-        
-        return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+
+            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
         }
     });
 
     //#endregion
-
 
     //#region OnGet by id
 
@@ -51,7 +53,7 @@ const studentController = ( (app) => {
      * @group student - Retrieve students
      * @operationId retrieveNoteInfoById
      * @produces application/json
-     * @returns {Note} 200 - List object note
+     * @returns {Student} 200 - List object note
      * @returns {BadRequestResponse.model} 400 - Object bad request
      * @returns {object} 401 - Object authorization required
      * @returns {object} 500 - Objeto internal Serve Erro
@@ -59,44 +61,59 @@ const studentController = ( (app) => {
      */
     router.get(`${pathStudent.getById}`, async (req, res) => {
         try {
-        
-        let id = req.params.id
 
-        return res.send({ mensagem : `ok get id : ${id}` });
+            let id = req.params.id
+            let student = await Student.findById(id);
 
-        // const anotacao = await Note.find();
-        // return res.send({ anotacao });
-        
+            return res.send(student);
         } catch (err) {
-        
-        return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+
+            base.error(res, err)
         }
     });
 
     //#endregion
 
     //#region OnPost
-    
+
     /**
      * Route to create student 
      * @route POST /student
      * @group student - Retrieve students
      * @operationId createStudent
      * @produces application/json
-     * @returns {Note} 200 - List object note
+     * @param {string} email - Student email
+     * @param {string} name - Student name
+     * @param {string} password - Student password
+     * @returns {StudentCreateResponse.model} 200 - List object note
      * @returns {BadRequestResponse.model} 400 - Object bad request
      * @returns {object} 401 - Object authorization required
      * @returns {object} 500 - Objeto internal Serve Erro
      * @security JWT
      */
-    router.post(`${pathStudent.post}` , async (req, res) => {
-        try{
+    router.post(`${pathStudent.post}`, async (req, res) => {
+        try {
 
-        return res.send({ mensagem : "ok post" });
+            const args = { email, name, password } = req.body
+            
+            args.isActive = true
+            
+            base.isParametreRequired(res, { email: args.email, name: args.name, password: args.password })
 
-        }catch(err){
+            if (await Student.findOne({ email: args.email }))
+                return res.status(codHttp.badRequest)
+                    .send(new BadRequestResponse('User already exists', [`email: ${args.email} email already registered`]))
 
-        return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+
+            let student = await Student.create(args);
+
+            student.password = undefined
+
+            return res.send(new StudentCreateResponse(student, generetToken({ id: student.id })))
+
+        } catch (err) {
+
+            base.error(res, err)
         }
     })
 
@@ -107,10 +124,13 @@ const studentController = ( (app) => {
      * Route to update the student by Id
      * @route PUT /student/{id}
      * @param {string} id.path - id student
-     * @group student - Retrieve students
-     * @operationId retrieveStudentInfoById
+     * @param {string} email - Student email
+     * @param {string} name - Student name
+     * @param {string} password - Student password
+     * @group student - Update students
+     * @operationId updateStudentInfoById
      * @produces application/json
-     * @returns {Note} 200 - List object note
+     * @returns {Student} 200 - List object note
      * @returns {BadRequestResponse.model} 400 - Object bad request
      * @returns {object} 401 - Object authorization required
      * @returns {object} 500 - Objeto internal Serve Erro
@@ -118,14 +138,19 @@ const studentController = ( (app) => {
      */
     router.put(`${pathStudent.put}`, async (req, res) => {
         try {
-        
-        let id = req.params.id
 
-        return res.send({ mensagem : `ok put id : ${id}` });
+            const args = { email, name, password } = req.body
+            args.id = req.params.id
+
+            base.isParametreRequired(res, { id: args.id , email: args.email, name: args.name, password: args.password })
+
+            let student = await Student.update(args)
+
+            return res.send(student);
 
         } catch (err) {
-        
-        return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+
+            base.error(res, err)
         }
     });
 
@@ -140,7 +165,7 @@ const studentController = ( (app) => {
      * @group student - Retrieve students
      * @operationId retrieveStudentInfoById
      * @produces application/json
-     * @returns {Note} 200 - List object note
+     * @returns {Student.model} 200 - List object note
      * @returns {BadRequestResponse.model} 400 - Object bad request
      * @returns {object} 401 - Object authorization required
      * @returns {object} 500 - Objeto internal Serve Erro
@@ -148,21 +173,26 @@ const studentController = ( (app) => {
      */
     router.delete(`${pathStudent.delete}`, async (req, res) => {
         try {
-        
-        let id = req.params.id
 
-        return res.send({ mensagem : `ok delete id : ${id}` });
+            let id = req.params.id
+
+            await Student.findByIdAndUpdate( id , { 
+                isActive : false
+            }, { new: true })
+
+            let student = await Student.findById(id)
+
+            return res.send(student);
 
         } catch (err) {
-        
-        return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+
+            base.error(res, err)
         }
     });
 
     //#endregion
 
-
-    //#region Registrar rota
+    //#region Registre router
 
     app.use(`${pathStudent.base}`, router)
 

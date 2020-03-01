@@ -14,8 +14,17 @@ var server = ( async (app) => {
     const controllers = await fs.readdirSync(pathController)
     
     controllers.map( controller => {
-        if(controller.includes('.js'))
-            require(`${pathController}/${controller}`)(app)
+        try{
+            if(controller.includes('.js'))
+                require(`${pathController}/${controller}`)(app)
+
+        }catch(err){
+            console.error(`Erro no controller : ${controller} ` , err)
+
+            throw err
+        }
+
+
     })
 
     app.listen(portServer)

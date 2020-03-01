@@ -28,6 +28,11 @@
     "@models" : "./src/app/models",
     "@config" : "./src/config",
     "@enum" : "./src/app/enum",
-    "@dataBase" : "./src/database/index.js"
+    "@dataBase" : "./src/database/index.js",
+    "@response" : "./src/app/response",
+    "@request" : "./src/app/request",
+    "@service" : "./src/app/service",
+    "@objectValues" : "./src/app/objectValues",
+    "@exception" : "./src/app/exception"
   }
 }

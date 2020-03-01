@@ -25,9 +25,7 @@ const expressSwagger = require('express-swagger-generator')
         basedir: `${__dirname}/../../src/`, //app absolute path
         //Path to the API handle folder
         files: [
-             './app/controllers/**/*.js'
-            ,'./app/models/**/*.js'
-            ,'./app/objectValues/**/*.js'
+             './app/**/*.js'
         ]
     }
 

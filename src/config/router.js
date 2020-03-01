@@ -51,7 +51,7 @@ module.exports = {
 
         card : {
             allowanonymous : true,
-            base: `${baseApi}/v1/deck` 
+            base: `${baseApi}/v1/card` 
             ,get : '/' 
             ,getById : '/:id' 
             ,post : '/'
