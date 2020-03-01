@@ -1,6 +1,7 @@
 const BadRequestResponse = require('@response/badRequestResponse')
     , codHttp = require('@enum/codHttp')
     , BadRequestException = require('@exception/badRequestException')
+    , CastError = require('mongoose/lib/error/cast')
 
 
 const baseController = ( function(app) {
@@ -51,6 +52,12 @@ baseController.error = function( res , err ) {
 
     if(err instanceof BadRequestException){
         return console.log(err)
+    }
+
+    if(err instanceof CastError){
+
+        return res.status(codHttp.badRequest)
+            .send( new BadRequestException(err.message , []));
     }
 
     res.status(codHttp.internalServeErro).send({ error: 'Internal error', mens : err.message });

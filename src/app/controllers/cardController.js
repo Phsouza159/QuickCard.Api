@@ -1,13 +1,17 @@
 const express = require('express')
     , authMiddleware = require('@middlewares/autenticacao')
-    , Note = require('@models/note.js')
+    , Card = require('@models/card')
+    , BlockCard = require('@models/blockCard')
+    , BadRequestResponse = require('@response/badRequestResponse')
+    , base = require('./baseController')
     , codHttp = require('@enum/codHttp')
     , router = express.Router()
-    , pathRoute = require('@config/router.js')
+    , pathRoute = require('@config/router')
     , pathCard = pathRoute.v1.card
 
 
 const cardController = (( app) => {
+    
     // authentication
     if (!pathCard.allowanonymous)
         router.use(authMiddleware);
@@ -20,7 +24,7 @@ const cardController = (( app) => {
     * @group Card - Retrieve Card
     * @operationId retrieveCardInfo
     * @produces application/json
-    * @returns {Array<Note>} 200 - List object note
+    * @returns {Array<Card>} 200 - List object note
     * @returns {BadRequestResponse.model} 400 - Object bad request
     * @returns {object} 401 - Object authorization required
     * @returns {object} 500 - Objeto internal Serve Erro
@@ -29,14 +33,13 @@ const cardController = (( app) => {
     router.get(`${pathCard.get}`, async (req, res) => {
         try {
 
-            return res.send({ mensagem: "ok get" });
+            const cards = await Card.find()
 
-            // const anotacao = await Anotacao.find();
-            // return res.send({ anotacao });
+            res.send(cards)
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     });
 
@@ -51,7 +54,7 @@ const cardController = (( app) => {
     * @group Card - Retrieve Card
     * @operationId retrieveCardInfoById
     * @produces application/json
-    * @returns {Note} 200 - List object note
+    * @returns {Card} 200 - List object note
     * @returns {BadRequestResponse.model} 400 - Object bad request
     * @returns {object} 401 - Object authorization required
     * @returns {object} 500 - Objeto internal Serve Erro
@@ -60,16 +63,14 @@ const cardController = (( app) => {
     router.get(`${pathCard.getById}`, async (req, res) => {
         try {
 
-            let id = req.params.id
+            const id = req.params.id
+                , card = await Card.findById(id);
 
-            return res.send({ mensagem: `ok get id : ${id}` });
-
-            // const anotacao = await Note.find();
-            // return res.send({ anotacao });
+            res.send(card)
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     });
 
@@ -82,6 +83,9 @@ const cardController = (( app) => {
     * @route POST /card
     * @group Card - Create Card
     * @operationId createCard
+    * @param {string} idNotePad.body - id NotePad entity  
+    * @param {string} front.body - front card  
+    * @param {string} verse.body - verse card  
     * @produces application/json
     * @returns {Note} 200 - List object note
     * @returns {BadRequestResponse.model} 400 - Object bad request
@@ -92,11 +96,23 @@ const cardController = (( app) => {
     router.post(`${pathCard.post}`, async (req, res) => {
         try {
 
-            return res.send({ mensagem: "ok post" });
+            const { idblockcard , front , verse } = req.body;
+
+            base.isParametreRequired(res, {idblockcard, front, verse})
+
+            const blockCard = await BlockCard.findById(idblockcard)
+
+            if(!blockCard)
+                return res.status(codHttp.badRequest)
+                    .send(new BadRequestResponse('block card does not exist', [`id block card: ${idblockcard}`]))
+
+            const card = await Card.create({blockCard , front , verse, isActive : true});
+
+            res.send(card);
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     })
 
@@ -161,7 +177,6 @@ const cardController = (( app) => {
     });
 
     //#endregion
-
 
     //#region Registrar rota
 

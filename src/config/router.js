@@ -57,6 +57,15 @@ module.exports = {
             ,post : '/'
             ,put : '/:id'
             ,delete : '/:id'     
+        } ,
+        blockCard : {
+            allowanonymous : true,
+            base: `${baseApi}/v1/blockcard` 
+            ,get : '/' 
+            ,getById : '/:id' 
+            ,post : '/'
+            ,put : '/:id'
+            ,delete : '/:id'     
         }
     }
 }
