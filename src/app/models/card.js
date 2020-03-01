@@ -4,15 +4,15 @@ const mongoose = require('../../database')
 /**
  * @typedef Card
  * @property {string} _id - id card  
- * @property {BlockCard.model} blockCard - blockCard entity
+ * @property {Deck.model} deck - deck entity
  * @property {string} front - front card  
  * @property {string} verse - verse card  
  * @property {boolean} isActive - flag active 
  */
 const CardSchema = new mongoose.Schema({
-    blockCard: {
+    deck: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'BlockCard',
+        ref: 'Deck',
         required: true,
     },
     front: {

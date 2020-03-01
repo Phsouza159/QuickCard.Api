@@ -1,14 +1,14 @@
 const mongoose = require('@dataBase');
 
 /**
- * @typedef BlockCard
- * @property {string} _id - id bloco card 
+ * @typedef Deck
+ * @property {string} _id - id deck 
  * @property {Student.model} student - Student entity
- * @property {string} name - name block card  
+ * @property {string} name - name deck  
  * @property {Array<Card>} card - list card entity  
  * @property {boolean} isActive - flag active 
  */
-const BlockCardSchema = new mongoose.Schema({
+const DeckdSchema = new mongoose.Schema({
     student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
@@ -28,6 +28,6 @@ const BlockCardSchema = new mongoose.Schema({
     }
 });
 
-const BlockCard = mongoose.model('BlockCard', BlockCardSchema);
+const Deck = mongoose.model('Deck', DeckdSchema);
 
-module.exports = BlockCard;
+module.exports = Deck;

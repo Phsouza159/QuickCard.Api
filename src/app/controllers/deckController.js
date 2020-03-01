@@ -1,12 +1,17 @@
 const express = require('express')
+    , Deck = require('@models/deck')
+    , Student = require('@models/student')
+    , Card = require('@models/card')
+    , base = require('./baseController')
     , authMiddleware = require('@middlewares/autenticacao')
-    , Note = require('@models/note.js')
+    , BadRequestResponse = require('@response/badRequestResponse')
     , codHttp = require('@enum/codHttp')
     , router = express.Router()
-    , pathRoute = require('@config/router.js')
+    , pathRoute = require('@config/router')
     , pathDeck = pathRoute.v1.deck
 
-const deckController = ((app) => {
+const deckController = ( (app) => {
+    
     // authentication
     if (!pathDeck.allowanonymous)
         router.use(authMiddleware);
@@ -16,10 +21,10 @@ const deckController = ((app) => {
     /**
     * Route to recover all decks
     * @route GET /deck
-    * @group Deck - Retrieve Deck
+    * @group Deck - Retrieve deck
     * @operationId retrieveDeckInfo
     * @produces application/json
-    * @returns {Array<Note>} 200 - List object note
+    * @returns {Array<Deck>} 200 - List object note
     * @returns {BadRequestResponse.model} 400 - Object bad request
     * @returns {object} 401 - Object authorization required
     * @returns {object} 500 - Objeto internal Serve Erro
@@ -28,14 +33,13 @@ const deckController = ((app) => {
     router.get(`${pathDeck.get}`, async (req, res) => {
         try {
 
-            return res.send({ mensagem: "ok get" });
+            const decks = await Deck.find()
 
-            // const anotacao = await Anotacao.find();
-            // return res.send({ anotacao });
+            res.send(decks)
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     });
 
@@ -47,10 +51,10 @@ const deckController = ((app) => {
     * Route to recover from deck by ID
     * @route GET /deck/{id}
     * @param {string} id.path - id deck
-    * @group Deck - Retrieve Deck
+    * @group Deck - Retrieve deck by id
     * @operationId retrieveDeckInfoById
     * @produces application/json
-    * @returns {Note} 200 - List object note
+    * @returns {Deck.model} 200 - List object note
     * @returns {BadRequestResponse.model} 400 - Object bad request
     * @returns {object} 401 - Object authorization required
     * @returns {object} 500 - Objeto internal Serve Erro
@@ -59,16 +63,19 @@ const deckController = ((app) => {
     router.get(`${pathDeck.getById}`, async (req, res) => {
         try {
 
-            let id = req.params.id
+            const id = req.params.id
+                , deck = await Deck.findById(id);
+                 
+            
+            if(deck) {
+                deck.card = await Card.find({ 'deck': id})
+            }
 
-            return res.send({ mensagem: `ok get id : ${id}` });
-
-            // const anotacao = await Note.find();
-            // return res.send({ anotacao });
+            res.send(deck)
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     });
 
@@ -77,12 +84,14 @@ const deckController = ((app) => {
     //#region OnPost
 
     /**
-    * Route to create notepad
-    * @route POST /deck
-    * @group Deck - Create Deck
-    * @operationId createDeck
+    * Route to create deck
+    * @route POST /blackcard
+    * @group Deck - create deck
+    * @operationId createdDeckd
+    * @param {string} idStudent.body - id student entity  
+    * @param {string} name.body - name deck  
     * @produces application/json
-    * @returns {Note} 200 - List object note
+    * @returns {Deck.model} 200 - List object note
     * @returns {BadRequestResponse.model} 400 - Object bad request
     * @returns {object} 401 - Object authorization required
     * @returns {object} 500 - Objeto internal Serve Erro
@@ -91,11 +100,19 @@ const deckController = ((app) => {
     router.post(`${pathDeck.post}`, async (req, res) => {
         try {
 
-            return res.send({ mensagem: "ok post" });
+            const { idStudent , name } = req.body;
+
+            base.isParametreRequired(res, {idStudent , name})
+
+            const student = await Student.findById(idStudent)
+
+            const deck = await Deck.create({student , name , isActive : true});
+
+            res.send(deck);
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     })
 
@@ -107,10 +124,11 @@ const deckController = ((app) => {
     * Route to update the deck by Id
     * @route PUT /deck/{id}
     * @param {string} id.path - id deck
-    * @group Deck - Update Deck
+    * @param {string} name.body - name deck  
+    * @group Deck - Update deck
     * @operationId retrieveDeckUpdateById
     * @produces application/json
-    * @returns {Note} 200 - List object note
+    * @returns {Deck.model} 200 - List object note
     * @returns {BadRequestResponse.model} 400 - Object bad request
     * @returns {object} 401 - Object authorization required
     * @returns {object} 500 - Objeto internal Serve Erro
@@ -120,12 +138,26 @@ const deckController = ((app) => {
         try {
 
             let id = req.params.id
+                , name = req.body.name
 
-            return res.send({ mensagem: `ok put id : ${id}` });
+            base.isParametreRequired(res, {id , name})
+
+            const deck = await Deck.findById(id);
+
+            if(!deck)
+                return res.status(codHttp.badRequest)
+                    .send(new BadRequestResponse('deck does not exist', [`id: ${id} deck does not exist`]))              
+                    
+                    
+            await Deck.findByIdAndUpdate( id , { 
+                name 
+            }, { new: true })        
+
+            return res.send(await Deck.findById(id));
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     });
 
@@ -140,7 +172,7 @@ const deckController = ((app) => {
     * @group Deck - Delete deck
     * @operationId retrieveDeckDeleteById
     * @produces application/json
-    * @returns {Note} 200 - List object note
+    * @returns {Deck.model} 200 - List object note
     * @returns {BadRequestResponse.model} 400 - Object bad request
     * @returns {object} 401 - Object authorization required
     * @returns {object} 500 - Objeto internal Serve Erro
@@ -151,16 +183,26 @@ const deckController = ((app) => {
 
             let id = req.params.id
 
-            return res.send({ mensagem: `ok delete id : ${id}` });
+            const deck = await Deck.findById(id);
+
+            if(!deck)
+                return res.status(codHttp.badRequest)
+                    .send(new BadRequestResponse('deck does not exist', [`id: ${id} deck does not exist`]))              
+                    
+                    
+            await Deck.findByIdAndUpdate( id , { 
+                isActive : false 
+            }, { new: true })        
+
+            return res.send(await Deck.findById(id));
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     });
 
     //#endregion
-
 
     //#region Registrar rota
 
@@ -168,6 +210,5 @@ const deckController = ((app) => {
 
     //#endregion
 })
-
 
 module.exports = deckController

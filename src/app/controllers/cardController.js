@@ -1,7 +1,7 @@
 const express = require('express')
     , authMiddleware = require('@middlewares/autenticacao')
     , Card = require('@models/card')
-    , BlockCard = require('@models/blockCard')
+    , Deck = require('@models/deck')
     , BadRequestResponse = require('@response/badRequestResponse')
     , base = require('./baseController')
     , codHttp = require('@enum/codHttp')
@@ -96,17 +96,17 @@ const cardController = (( app) => {
     router.post(`${pathCard.post}`, async (req, res) => {
         try {
 
-            const { idblockcard , front , verse } = req.body;
+            const { idDeck , front , verse } = req.body;
 
-            base.isParametreRequired(res, {idblockcard, front, verse})
+            base.isParametreRequired(res, {idDeck, front, verse})
 
-            const blockCard = await BlockCard.findById(idblockcard)
+            const deck = await Deck.findById(idDeck)
 
-            if(!blockCard)
+            if(!deck)
                 return res.status(codHttp.badRequest)
-                    .send(new BadRequestResponse('block card does not exist', [`id block card: ${idblockcard}`]))
+                    .send(new BadRequestResponse('block card does not exist', [`id block card: ${idDeck}`]))
 
-            const card = await Card.create({blockCard , front , verse, isActive : true});
+            const card = await Card.create({deck , front , verse, isActive : true});
 
             res.send(card);
 
