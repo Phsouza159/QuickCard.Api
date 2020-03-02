@@ -10,7 +10,7 @@ const express = require('express')
     , pathCard = pathRoute.v1.card
 
 
-const cardController = (( app) => {
+const cardController = ( function(app) {
     
     // authentication
     if (!pathCard.allowanonymous)

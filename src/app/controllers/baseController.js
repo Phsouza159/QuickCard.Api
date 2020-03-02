@@ -13,7 +13,7 @@ const baseController = ( function(app) {
 
 //#region Check parameters
 
-baseController.isParametreRequired = function( res , argumentosList) {
+baseController.isParametreRequired = function(argumentosList) {
 
 
     let ags = Object.values(argumentosList)
@@ -49,18 +49,24 @@ baseController.isParametreRequired = function( res , argumentosList) {
 
 baseController.error = function( res , err ) {
 
-    if(err instanceof BadRequestException){
-        return console.log(err)
+    switch(true){
+        case err instanceof BadRequestException:
+            res.status(codHttp.badRequest)
+                .send(err)
+
+            break
+        // erro cast mongodb
+        case err instanceof CastError:
+            res.status(codHttp.badRequest)
+                .send( new BadRequestException(err.message , []))
+
+            break
+
+        default:
+            res.status(codHttp.internalServeErro).send({ error: 'Internal error', mens : err.message })
+            console.error('Internal error' , err)
+            break
     }
-
-    if(err instanceof CastError){
-
-        return res.status(codHttp.badRequest)
-            .send( new BadRequestException(err.message , []));
-    }
-
-    res.status(codHttp.internalServeErro).send({ error: 'Internal error', mens : err.message });
-    console.error('Erro interno' , err)
 }
 
 

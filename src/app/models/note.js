@@ -20,7 +20,7 @@ const NoteSchema = new mongoose.Schema({
         require: true,
         ref: 'NotePad',
     },
-    nome: {
+    name: {
         type: String,
         required: true,
     },

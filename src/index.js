@@ -19,12 +19,10 @@ var server = ( async (app) => {
                 require(`${pathController}/${controller}`)(app)
 
         }catch(err){
-            console.error(`Erro no controller : ${controller} ` , err)
 
+            console.error(`Erro no controller : ${controller} ` , err)
             throw err
         }
-
-
     })
 
     app.listen(portServer)

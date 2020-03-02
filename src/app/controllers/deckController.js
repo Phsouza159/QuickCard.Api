@@ -10,7 +10,7 @@ const express = require('express')
     , pathRoute = require('@config/router')
     , pathDeck = pathRoute.v1.deck
 
-const deckController = ( (app) => {
+const deckController = ( function(app){
     
     // authentication
     if (!pathDeck.allowanonymous)

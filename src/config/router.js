@@ -10,7 +10,7 @@ module.exports = {
         } ,
 
         student : {
-            allowanonymous : true,
+            allowanonymous : false,
             base: `${baseApi}/v1/student` 
             ,get : '/' 
             ,getById : '/:id' 
@@ -20,7 +20,7 @@ module.exports = {
         } ,
 
         note : {
-            allowanonymous : true,
+            allowanonymous : false,
             base: `${baseApi}/v1/note` 
             ,get : '/' 
             ,getById : '/:id' 
@@ -30,7 +30,7 @@ module.exports = {
         } ,
 
         notePad : {
-            allowanonymous : true,
+            allowanonymous : false,
             base: `${baseApi}/v1/notepad` 
             ,get : '/' 
             ,getById : '/:id' 
@@ -40,7 +40,7 @@ module.exports = {
         } ,
 
         deck : {
-            allowanonymous : true,
+            allowanonymous : false,
             base: `${baseApi}/v1/deck` 
             ,get : '/' 
             ,getById : '/:id' 
@@ -50,7 +50,7 @@ module.exports = {
         } ,
 
         card : {
-            allowanonymous : true,
+            allowanonymous : false,
             base: `${baseApi}/v1/card` 
             ,get : '/' 
             ,getById : '/:id' 

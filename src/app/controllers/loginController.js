@@ -10,7 +10,7 @@ const express = require('express')
     , pathRoute = require('@config/router.js')
     , pathlogin = pathRoute.v1.login
 
- const loginController = ( (app) => {
+ const loginController = ( function(app) {
 
     // authentication
     if(!pathlogin.allowanonymous)

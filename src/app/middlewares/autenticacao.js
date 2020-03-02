@@ -1,26 +1,34 @@
-const jwt = require('jsonwebtoken');
-const authConfig = require('../../config/autenticacao.json');
+const jwt = require('jsonwebtoken')
+  , authConfig = require('@config/autenticacao.json')
+  , UnauthorizedException = require('@exception/unauthorizedException')
+  , codHttp = require('@enum/codHttp')
 
 module.exports = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader)
-    return res.status(401).send({ error: 'Nenhum token fornecido' });
+    return res.status(codHttp.authorizationRequired)
+      .send( new UnauthorizedException('No tokens provided'))
 
-  const parts = authHeader.split(' ');
+  const parts = authHeader.split(' ')
 
   if (!parts.length === 2)
-    return res.status(401).send({ error: 'Erro de token' });
+    return res.status(codHttp.authorizationRequired)
+      .send(new UnauthorizedException('Token error'))
 
   const [ scheme, token ] = parts;
-
+  
   if (!/^Bearer$/i.test(scheme))
-    return res.status(401).send({ error: 'Token mal formatado' });
+    return res.status(codHttp.authorizationRequired)
+      .send(new UnauthorizedException('Badly formatted token'))
 
   jwt.verify(token, authConfig.secret, (err, decoded) => {
-    if (err) return res.status(401).send({ error: 'Token inválido' });
+    if (err) 
+      return res.status(codHttp.authorizationRequired)
+        .send(new UnauthorizedException('invalid token'))
 
-    req.estudanteId = decoded.id;
-    return next();
+    req._user = decoded
+
+    return next()
   });
 };

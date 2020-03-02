@@ -10,7 +10,7 @@ const express = require('express')
     , router = express.Router()
     , pathStudent = pathRoute.v1.student
 
-const studentController = ((app) => {
+const studentController = ( function(app){
 
     // authentication
     if (!pathStudent.allowanonymous)

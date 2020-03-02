@@ -9,7 +9,7 @@ const express = require('express')
     , pathRoute = require('@config/router')
     , pathNotePad = pathRoute.v1.notePad
 
-const notePadController = ((app) => {
+const notePadController = ( function(app){
 
     // authentication
     if (!pathNotePad.allowanonymous)

@@ -5,7 +5,8 @@
   "repository": "https://github.com/henrique770/Backend-QuickCard",
   "author": "Bianklin Bessa Rizzi <bianklinb@gmail.com>",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js" ,
+    "docs" : "swagger-to-md ./docs/api-docs.json "
   },
   "license": "MIT",
   "dependencies": {
@@ -16,23 +17,24 @@
     "module-alias": "^2.2.2",
     "mongoose": "^5.7.1",
     "nodemon": "^1.19.2",
-    "sucrase": "^3.10.1"
+    "sucrase": "^3.10.1",
+    "swagger-to-md": "^1.0.0"
   },
   "devDependencies": {
     "express-swagger-generator": "^1.1.17"
   },
   "_moduleAliases": {
-    "@"      : "./src",
-    "@app"   : "./src/app",
-    "@middlewares" : "./src/app/middlewares",
-    "@models" : "./src/app/models",
-    "@config" : "./src/config",
-    "@enum" : "./src/app/enum",
-    "@dataBase" : "./src/database/index.js",
-    "@response" : "./src/app/response",
-    "@request" : "./src/app/request",
-    "@service" : "./src/app/service",
-    "@objectValues" : "./src/app/objectValues",
-    "@exception" : "./src/app/exception"
+    "@": "./src",
+    "@app": "./src/app",
+    "@middlewares": "./src/app/middlewares",
+    "@models": "./src/app/models",
+    "@config": "./src/config",
+    "@enum": "./src/app/enum",
+    "@dataBase": "./src/database/index.js",
+    "@response": "./src/app/response",
+    "@request": "./src/app/request",
+    "@service": "./src/app/service",
+    "@objectValues": "./src/app/objectValues",
+    "@exception": "./src/app/exception"
   }
 }
