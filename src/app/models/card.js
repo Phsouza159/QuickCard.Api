@@ -1,4 +1,4 @@
-const mongoose = require('../../database')
+const mongoose = require('@dataBase')
     , Schema = mongoose.Schema
     , ObjectId = Schema.ObjectId;
 /**

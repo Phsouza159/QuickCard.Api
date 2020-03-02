@@ -1,29 +1,35 @@
 const mongoose = require('@dataBase')
-    , Schema = mongoose.Schema 
-    , ObjectId = Schema.ObjectId
 
 /**
  * @typedef Note
- * @property {String} id_estudante - id estudante 
- * @property {String} id_bloco_anotacao - id bloco anotacao 
- * @property {String} nome - nome anotacao 
- * @property {String} conteudo - conteudo anotacao 
+ * @property {string} _id - id note  
+ * @property {Student.model} student - student entity 
+ * @property {NotePad.model} notePad - notePad entity 
+ * @property {String} name - name note 
+ * @property {String} content - content note 
+ * @property {boolean} isActive - flag active 
  */
 const NoteSchema = new mongoose.Schema({
-    id_estudante: {
-        type: ObjectId,
+    student: {
+        type: mongoose.Schema.Types.ObjectId,
         require: true,
+        ref: 'Student',
     },
-    id_bloco_anotacao: {
-        type: ObjectId,
+    notePad: {
+        type: mongoose.Schema.Types.ObjectId,
         require: true,
+        ref: 'NotePad',
     },
     nome: {
         type: String,
         required: true,
     },
-    conteudo: {
+    content: {
         type: String,
+        required: true,
+    },
+    isActive : {
+        type: Boolean,
         required: true,
     }
 });
