@@ -98,7 +98,7 @@ const cardController = ( function(app) {
 
             const { idDeck , front , verse } = req.body;
 
-            base.isParametreRequired(res, {idDeck, front, verse})
+            base.isParametreRequired({idDeck, front, verse})
 
             const deck = await Deck.findById(idDeck)
 
@@ -138,11 +138,11 @@ const cardController = ( function(app) {
 
             let id = req.params.id
 
-            return res.send({ mensagem: `ok put id : ${id}` });
+            res.send({ mensagem: `ok put id : ${id}` });
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
         }
     });
 
@@ -168,11 +168,11 @@ const cardController = ( function(app) {
 
             let id = req.params.id
 
-            return res.send({ mensagem: `ok delete id : ${id}` });
+            res.send({ mensagem: `ok delete id : ${id}` });
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     });
 

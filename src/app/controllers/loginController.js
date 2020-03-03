@@ -34,7 +34,7 @@ const express = require('express')
             const args = { email, password } = req.body
                 , student = await Student.findOne({ email : args.email }).select('+password');
 
-            base.isParametreRequired(res, { email: args.email, password: args.password })
+            base.isParametreRequired({ email: args.email, password: args.password })
 
             if (!student)
                 return res.status(codHttp.badRequest)

@@ -1,5 +1,6 @@
 const express = require('express')
     , authMiddleware = require('@middlewares/autenticacao')
+    , Note = require('@models/note')
     , NotePad = require('@models/notePad')
     , Student = require('@models/student')
     , base = require('./baseController')
@@ -66,6 +67,9 @@ const notePadController = ( function(app){
 
             const notePad = await NotePad.findById(id)
 
+            if(notePad)
+                notePad.note = Note.find({'note' : id})
+
             res.send(notePad)
 
         } catch (err) {
@@ -101,13 +105,12 @@ const notePadController = ( function(app){
             const student = await Student.findById(idStudent)
 
             if(!student)
-                return res.send(codHttp.badRequest)
+                return res.status(codHttp.badRequest)
                     .send(new BadRequestResponse('student does not exist' , [`student does not exist by id ${idStudent}`]))
 
             const notePad = await NotePad.create({student , name , isActive : true});
 
             res.send(notePad)
-
 
         } catch (err) {
 
@@ -139,12 +142,12 @@ const notePadController = ( function(app){
             const id = req.params.id
             const { name } = req.body
 
-            base.isParametreRequired(res, {name})
+            base.isParametreRequired({name})
 
             const notePad = await NotePad.findById(id)
 
             if(!notePad)
-                return res.send(codHttp.badRequest)
+                return res.status(codHttp.badRequest)
                     .send(new BadRequestResponse('Notepad does not exist' , [`Notepad does not exist by id ${id}`]))
 
             await NotePad.findByIdAndUpdate( id , { 
@@ -185,7 +188,7 @@ const notePadController = ( function(app){
             const notePad = await NotePad.findById(id)
 
             if(!notePad)
-                return res.send(codHttp.badRequest)
+                return res.status(codHttp.badRequest)
                     .send(new BadRequestResponse('Notepad does not exist' , [`Notepad does not exist by id ${id}`]))
 
             await NotePad.findByIdAndUpdate( id , { 

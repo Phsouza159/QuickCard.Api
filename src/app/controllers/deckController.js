@@ -102,7 +102,7 @@ const deckController = ( function(app){
 
             const { idStudent , name } = req.body;
 
-            base.isParametreRequired(res, {idStudent , name})
+            base.isParametreRequired({idStudent , name})
 
             const student = await Student.findById(idStudent)
 
@@ -140,7 +140,7 @@ const deckController = ( function(app){
             let id = req.params.id
                 , name = req.body.name
 
-            base.isParametreRequired(res, {id , name})
+            base.isParametreRequired({id , name})
 
             const deck = await Deck.findById(id);
 
@@ -153,7 +153,7 @@ const deckController = ( function(app){
                 name 
             }, { new: true })        
 
-            return res.send(await Deck.findById(id));
+            res.send(await Deck.findById(id));
 
         } catch (err) {
 
@@ -194,7 +194,7 @@ const deckController = ( function(app){
                 isActive : false 
             }, { new: true })        
 
-            return res.send(await Deck.findById(id));
+            res.send(await Deck.findById(id));
 
         } catch (err) {
 

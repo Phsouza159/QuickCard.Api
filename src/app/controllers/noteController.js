@@ -98,7 +98,7 @@ var noteController = ( function(app){
 
       const { idStudent, idNotePad, content, name } = req.body
 
-      base.isParametreRequired(res, { idStudent, idNotePad, content, name })
+      base.isParametreRequired({ idStudent, idNotePad, content, name })
 
       const notePad = await NotePad.findById(idNotePad)
         , student = await Student.findById(idStudent)
@@ -146,7 +146,7 @@ var noteController = ( function(app){
 
       const { content, name } = req.body
 
-      base.isParametreRequired(res, { content, name })
+      base.isParametreRequired({ content, name })
 
       await Note.findByIdAndUpdate(id, {
         content

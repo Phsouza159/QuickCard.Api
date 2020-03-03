@@ -34,11 +34,11 @@ const studentController = ( function(app){
         try {
 
             const studentList = await Student.find()
-            return res.send(studentList)
+            res.send(studentList)
 
         } catch (err) {
 
-            return res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
         }
     });
 
@@ -65,7 +65,7 @@ const studentController = ( function(app){
             let id = req.params.id
             let student = await Student.findById(id);
 
-            return res.send(student);
+            res.send(student);
         } catch (err) {
 
             base.error(res, err)
@@ -98,7 +98,7 @@ const studentController = ( function(app){
             
             args.isActive = true
             
-            base.isParametreRequired(res, { email: args.email, name: args.name, password: args.password })
+            base.isParametreRequired({ email: args.email, name: args.name, password: args.password })
 
             if (await Student.findOne({ email: args.email }))
                 return res.status(codHttp.badRequest)
@@ -109,7 +109,7 @@ const studentController = ( function(app){
 
             student.password = undefined
 
-            return res.send(new StudentCreateResponse(student, generetToken({ id: student.id })))
+            res.send(new StudentCreateResponse(student, generetToken({ id: student.id })))
 
         } catch (err) {
 
@@ -142,7 +142,7 @@ const studentController = ( function(app){
             const args = { email, name, password } = req.body
             args.id = req.params.id
 
-            base.isParametreRequired(res, { id: args.id , email: args.email, name: args.name, password: args.password })
+            base.isParametreRequired({ id: args.id , email: args.email, name: args.name, password: args.password })
 
             let student = await Student.update(args)
 
