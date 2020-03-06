@@ -1,13 +1,25 @@
 const 
-      express = require('express')
+    alias = require('module-alias/register')
+    , express = require('express')
     , app = express() 
     , pathAssets = `${__dirname}/assets`
     , router = require('express').Router()
     , cors = require('cors')
     , server = require('http').Server(app)
-    , io = require('socket.io')(server)
+    //, io = require('socket.io')(server)
+    , hubConnectServe = require('@service/hubConnect')
 
-var serverTeste = ((app) =>{
+var serverTeste = ( async (app) =>{
+
+    const hubconnect = new hubConnectServe(server , {})
+
+    hubconnect.registre(new function(){
+
+        this.log = (data) => {
+
+            console.log(data)
+        }
+    })
 
     app.use(cors({
         origin: 'http:127.0.0.1'
@@ -20,12 +32,18 @@ var serverTeste = ((app) =>{
         res.sendFile(`${__dirname}/view/index.html`)
     })
 
+    await hubconnect.start()
+
+    /*
     io.on('connection', function (socket) {
-        socket.emit('news', { hello: 'world' });
-        socket.on('my other event', function (data) {
-          console.log(data);
+
+        socket.on('hubConnect', function (data) {
+          
+            console.log(data);
         })
+
     })
+    */
 
 
     server.listen(8080)

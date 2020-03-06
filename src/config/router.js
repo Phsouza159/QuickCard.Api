@@ -3,6 +3,14 @@ const baseApi = '/api'
 
 module.exports = {
     v1 : {
+
+        synchronism : {
+            allowanonymous : true,
+            base: `${baseApi}/v1/synchronism` 
+            ,get : '/:id'
+            ,post : '/:id'
+        } ,
+
         login : {
             allowanonymous : true,
             base: `${baseApi}/v1/login` 

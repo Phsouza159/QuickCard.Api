@@ -34,12 +34,7 @@ baseController.isParametreRequired = function(argumentosList) {
     })
 
     if(isInValid) {
-
-        const response = new BadRequestResponse('Parametres required' , notifications)
-
-        res.status(codHttp.badRequest).send(response)
-
-        throw new BadRequestException( response.message )
+        throw new BadRequestException('Parametres required' , notifications)
     }
 }
 
@@ -50,6 +45,7 @@ baseController.isParametreRequired = function(argumentosList) {
 baseController.error = function( res , err ) {
 
     switch(true){
+
         case err instanceof BadRequestException:
             res.status(codHttp.badRequest)
                 .send(err)
