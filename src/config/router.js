@@ -18,7 +18,7 @@ module.exports = {
         } ,
 
         student : {
-            allowanonymous : false,
+            allowanonymous : true,
             base: `${baseApi}/v1/student` 
             ,get : '/' 
             ,getById : '/:id' 

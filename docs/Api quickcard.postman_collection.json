@@ -1,0 +1,450 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Api quickcard",
+		"_postman_id": "eef752a1-e1a0-f0dc-9c38-f91bc80d45d6",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Path - Student",
+			"description": "",
+			"item": [
+				{
+					"name": "Get list - Student",
+					"request": {
+						"url": "{{URL}}/v1/student",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Student by Id",
+					"request": {
+						"url": "{{URL}}/v1/student/5e5b1d469acbf155fa902dbb",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Post - create student",
+					"request": {
+						"url": "{{URL}}/v1/student",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\" : \"teste2@live.com\" \n\t, \"name\" : \"paulo\"\n\t, \"password\" : \"123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Put - update student",
+					"request": {
+						"url": "{{URL}}/v1/student/5e5b1e8a73c2f2578c577339",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\" : \"teste1@live.com\" \n\t, \"name\" : \"paulo3\"\n\t, \"password\" : \"123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - delete student",
+					"request": {
+						"url": "{{URL}}/v1/student/5e5b3afb97716f73bba99d53",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Path - Login",
+			"description": "",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"url": "{{URL}}/v1/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\" : \"pauloh159@live.com\"\n\t,\"password\" : \"123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Path - Note",
+			"description": "",
+			"item": [
+				{
+					"name": "Get list - Note",
+					"request": {
+						"url": "{{URL}}/v1/note",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNWIxZDQ2OWFjYmYxNTVmYTkwMmRiYiIsImlhdCI6MTU4MzQ2ODIyOSwiZXhwIjoxNTgzNTU0NjI5fQ.brsrzvJ9si6qkt3UjfDkWxF-G5nwVyJp-qfc0Efzf8U",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Note by Id",
+					"request": {
+						"url": "{{URL}}/v1/note/5e5c6115411fbb7a0e4307e7",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Post - create note",
+					"request": {
+						"url": "{{URL}}/v1/note",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"idStudent\" : \"5e5b1d469acbf155fa902dbb\"\n\t, \"idNotePad\" : \"5e5c4ede4cc8f867ba1035ed\"\n\t, \"content\" : \"teste content\"\n\t, \"name\" : \"teste name\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Put - update note",
+					"request": {
+						"url": "{{URL}}/v1/note/5e5c6115411fbb7a0e4307e7",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\" : \"teste content 2\"\n\t, \"name\" : \"teste name 2\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - delete note",
+					"request": {
+						"url": "{{URL}}/v1/note/5e5c6115411fbb7a0e4307e7",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Path - NotePad",
+			"description": "",
+			"item": [
+				{
+					"name": "Get list - NotePad",
+					"request": {
+						"url": "{{URL}}/v1/notepad",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get notped by Id",
+					"request": {
+						"url": "{{URL}}/v1/notepad/5e5c4ede4cc8f867ba1035ed",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Post - create notepad",
+					"request": {
+						"url": "{{URL}}/v1/notepad",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"idStudent\" : \"5e5b1d469acbf155fa902dbb\",\n\t\"name\" : \"teste\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Put - update notepad",
+					"request": {
+						"url": "{{URL}}/v1/notepad/5e5c4ede4cc8f867ba1035ed",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"teste 2\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - delete student",
+					"request": {
+						"url": "{{URL}}/v1/notepad/5e5c4ede4cc8f867ba1035ed",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Path - Card",
+			"description": "",
+			"item": [
+				{
+					"name": "Get list - Card",
+					"request": {
+						"url": "{{URL}}/v1/card",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get card by Id",
+					"request": {
+						"url": "{{URL}}/v1/card/2",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Post - create card",
+					"request": {
+						"url": "{{URL}}/v1/card",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"front\" : \"teste\"\n\t, \"verse\" : \"teste\"\n\t, \"idblockcard\" : \"5e5c13de13d91528e725dd43\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Put - update deck",
+					"request": {
+						"url": "{{URL}}/v1/card/1",
+						"method": "PUT",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - delete card",
+					"request": {
+						"url": "{{URL}}/v1/card/1",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Path - Deck",
+			"description": "",
+			"item": [
+				{
+					"name": "Get list - deck",
+					"request": {
+						"url": "{{URL}}/v1/deck",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get deck by Id",
+					"request": {
+						"url": "{{URL}}/v1/deck/5e5c13de13d91528e725dd43",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Post - create deck",
+					"request": {
+						"url": "{{URL}}/v1/deck",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNWIxZDQ2OWFjYmYxNTVmYTkwMmRiYiIsImlhdCI6MTU4MzQ2MzYzMiwiZXhwIjoxNTgzNTUwMDMyfQ.W7LDAggXMlR54VuDRg5GPLMGm56iTuRfkrTNHgyCh2k",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"idStudent\" : \"5e5b1d469acbf155fa902dbb\"\n\t, \"name\" : \"teste\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Put - update deck",
+					"request": {
+						"url": "{{URL}}/v1/deck/5e5c13de13d91528e725dd43",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"teste 2\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - delete deck",
+					"request": {
+						"url": "{{URL}}/v1/deck/5e5c13de13d91528e725dd43",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Path - Synchronism",
+			"description": "",
+			"item": []
+		},
+		{
+			"name": "{{URL}}/v1/synchronism/5e5b1d469acbf155fa902dbb",
+			"request": {
+				"url": "{{URL}}/v1/synchronism/5e5b1d469acbf155fa902dbb",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
