@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const database = ((mongoose) => {
         const port = 27017
-            , host = '187.113.18.217'
+            , host = '177.133.30.238'
             , base = 'quickcarddb'
             , urlDatabase = `mongodb://${host}:${port}/${base}` 
             , options = {

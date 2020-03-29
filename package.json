@@ -21,7 +21,8 @@
     "nodemon": "^1.19.2",
     "socket.io": "^2.3.0",
     "sucrase": "^3.10.1",
-    "swagger-to-md": "^1.0.0"
+    "swagger-to-md": "^1.0.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "express-swagger-generator": "^1.1.17"
