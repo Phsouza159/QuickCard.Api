@@ -48,7 +48,7 @@ const port = 27017
 ```
 ## Controller
 
-**Parado URL**
+**Pradão URL**
 
 http://{URL_API}/api/{VERSION}/{CONTROLLER}/{ID}
 
