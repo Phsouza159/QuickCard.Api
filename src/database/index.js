@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
 const database = ((mongoose) => {
-        const port = 27017
+        let port = 27017
             , host = '177.133.30.238'
             , base = 'quickcarddb'
             , urlDatabase = `mongodb://${host}:${port}/${base}` 
+            , urlNuvem = `mongodb+srv://quickcard:TujqN8Q3MdCe8Wbi@quickcard-ggofu.mongodb.net/database?retryWrites=true&w=majority`
+            , url = ''
+            , isLocal = false
             , options = {
                 useNewUrlParser : true
                 , useFindAndModify : false
@@ -12,18 +15,19 @@ const database = ((mongoose) => {
                 , useUnifiedTopology : true
             }
 
+        url = isLocal ? urlDatabase : urlNuvem
 
-        mongoose.connect( urlDatabase, options )
+        mongoose.connect( url, options )
 
         mongoose.connection.on('error', err => {
             
-            console.error(`Erro connect database on url:${urlDatabase}` , err)
+            console.error(`Erro connect database on url:${url}` , err)
             throw new Error('Stop aplication!')
         });
 
         mongoose.connection.on('sucess', sucess => {
 
-            console.log(`Connect sucess on url:${urlDatabase}`)
+            console.log(`Connect sucess on url:${url}`)
         });
 
         mongoose.Promise = global.Promise
