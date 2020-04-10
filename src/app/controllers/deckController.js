@@ -33,8 +33,9 @@ const deckController = ( function(app){
     router.get(`${pathDeck.get}`, async (req, res) => {
         try {
 
-            const decks = await Deck.find()
+            let id = req._user.id
 
+            const decks = await Deck.find({ 'student': id})
             res.send(decks)
 
         } catch (err) {
@@ -85,7 +86,7 @@ const deckController = ( function(app){
 
     /**
     * Route to create deck
-    * @route POST /blackcard
+    * @route POST /deck
     * @group Deck - create deck
     * @operationId createdDeckd
     * @param {string} idStudent.body - id student entity  
@@ -100,7 +101,9 @@ const deckController = ( function(app){
     router.post(`${pathDeck.post}`, async (req, res) => {
         try {
 
-            const { idStudent , name } = req.body;
+
+            const { name } = req.body
+                , idStudent = req._user.id
 
             base.isParametreRequired({idStudent , name})
 
