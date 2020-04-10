@@ -1,9 +1,54 @@
 
-### QuickCard API
 
+# QuickCard API
+Projeto QuickCard.Api
+Repositório [QuickCard.Mobile]([https://github.com/henrique770/QuickCard_Mobile](https://github.com/henrique770/QuickCard_Mobile))
+
+
+## Iniciando
+
+**Clonando projeto**
+```text 
+git clone https://github.com/Phsouza159/QuickCard.Api
+```
+**Instalando dependências**
+```text
+npm install
+```
+iniciando servidor
+```text
+npm start
+```
+
+## Configuração
+**Porta do servidor**
+em  [src/index.js](https://github.com/Phsouza159/QuickCard.Api/tree/master/src)
+```javascript
+const alias = require('module-alias/register')
+	 // PORTA SERVIDOR LISTEN
+	, portServer = 3000
+```
+
+**Conexao com seridor de banco de dados**
+em [src/database/index.js](https://github.com/Phsouza159/QuickCard.Api/tree/master/src/database/index.js)
+```text
+	// PORTA SERVIDOR BANCO
+const port = 27017
+	// IP SERVIDOR BANCO
+	, host = '127.0.0.1'
+	// NOME DO BANCO DE DADOS
+	, base = 'quickcarddb'
+	, urlDatabase = `mongodb://${host}:${port}/${base}`
+	, options = {
+		useNewUrlParser : true
+		, useFindAndModify : false
+		, useCreateIndex : false
+		, useUnifiedTopology : true
+	}
+```
 ## Controller
 
-**Parado URL**
+**Pradão URL**
 
 http://{URL_API}/api/{VERSION}/{CONTROLLER}/{ID}
 
@@ -49,7 +94,7 @@ O token é adquirido na controller de login .
 ## Login
 Para autenticação é necessário passar o email e senha do usuário correspondente.
 exemplo:
-```json
+```javascript
 {
 	"email" : "email de acesso"
 	,"password" : "senha de acesso"
@@ -58,7 +103,7 @@ exemplo:
 **Resposta do login**
 
 para sucesso: 
-```json
+```javascript
 {
 	"student": {
 		 "id": "identificador do estudante"
@@ -70,7 +115,7 @@ para sucesso:
 }
 ```
 para erro de login:
-```json
+```javascript
 {
 	"status": 400,
 	"message": "Invalid password or email"
@@ -79,7 +124,7 @@ para erro de login:
 # Entidades
 
 ## Student (Estudante):
-```json
+```javascript
 { 
 	 "id": "identificador do estudante"
 	 , "name": "nome do estudante"
@@ -89,7 +134,7 @@ para erro de login:
 }
 ```
 exemplo: 
-```json
+```javascript
 {
 	"_id": "5e80fd2529d3f509d046bc2e"
 	, "email": "p.hsouza@live.com"
@@ -99,7 +144,7 @@ exemplo:
 }
 ```
 ## Deck (Baralho):
-```json
+```javascript
 { 
 	 "id": "identificador do deck"
 	 , "student" : {
@@ -116,7 +161,7 @@ exemplo:
 ```
 
 ## Card (Cartão):
-```json
+```javascript
 { 
 	 "id": "identificador do cartão"
 	 , "deck": {
@@ -128,7 +173,7 @@ exemplo:
 }
 ```
 ## NotePad (Bloco de notas):
-```json
+```javascript
 { 
 	 "id": "identificador do cartão"
 	 , "name": "nome do bloco cartão"
@@ -144,7 +189,7 @@ exemplo:
 }
 ```
 ## Note (Anotação):
-```json
+```javascript
 { 
 	 "id": "identificador do cartão"
 	 , "notePad": {
@@ -155,14 +200,14 @@ exemplo:
 }
 ```
 
-## Models Status
+## Model Status
 
-**200 Ok** 
+**200 javascript** 
 Status code 200. Sucesso na ação do controller.
 
 **400 Bad Request**
 Status code 400. Requisição ruim.
-```json
+```javascript
 {
 	"status":400
 	,"message":"mensagem error"
@@ -174,7 +219,7 @@ Status code 400. Requisição ruim.
 
 **401 Unauthorized**
 Status code 401. Não autorizado no controller 
-```json
+```javascript
 {
 	"status":401
 	,"name":"unauthorized"
@@ -188,3 +233,6 @@ response body: *Cannot GET {URL}*
 
 **500 Error Server**
 Status code 500. Erro interno na API
+
+## DOCKER 
+Repositório dokcer hub: [quickCard]([https://hub.docker.com/repository/docker/pauloh159/quickcard.api](https://hub.docker.com/repository/docker/pauloh159/quickcard.api))
