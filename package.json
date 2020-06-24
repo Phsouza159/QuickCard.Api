@@ -24,9 +24,7 @@
     "sucrase": "^3.10.1",
     "swagger-to-md": "^1.0.0",
     "uuid": "^8.1.0",
-    "winston": "^3.2.1"
-  },
-  "devDependencies": {
+    "winston": "^3.2.1",
     "express-swagger-generator": "^1.1.17"
   },
   "_moduleAliases": {
