@@ -1,5 +1,6 @@
-const mongoose = require('@dataBase');
-const bcryptjs = require('bcryptjs');
+const mongoose = require('@dataBase')
+    , bcryptjs = require('bcryptjs')
+    , { v4: uuidv4 } = require('uuid')
 
 /**
  * @typedef Student
@@ -10,6 +11,10 @@ const bcryptjs = require('bcryptjs');
  * @property {boolean} isActive - flag active 
  */
 const StudentSchema = new mongoose.Schema({
+    _id: { 
+        type: String, 
+        default: uuidv4 
+    } ,
     name: {
         type: String,
         require: true,

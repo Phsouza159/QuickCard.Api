@@ -1,5 +1,5 @@
 const mongoose = require('@dataBase')
-
+    , { v4: uuidv4 } = require('uuid')
 /**
  * @typedef Note
  * @property {string} _id - id note  
@@ -10,13 +10,17 @@ const mongoose = require('@dataBase')
  * @property {boolean} isActive - flag active 
  */
 const NoteSchema = new mongoose.Schema({
+    _id: { 
+        type: String, 
+        default: uuidv4 
+    } ,
     student: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         require: true,
         ref: 'Student',
     },
     notePad: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         require: true,
         ref: 'NotePad',
     },

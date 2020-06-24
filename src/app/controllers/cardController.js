@@ -95,10 +95,25 @@ const cardController = ( function(app) {
     */
     router.post(`${pathCard.post}`, async (req, res) => {
         try {
+            const { 
+                Id: _id 
+                , IdDeck : idDeck 
+                , Front : front 
+                , Verse : verse
+                , IsReviewed : isReviewed
+                , NumGoodCount : numGoodCount
+                , NumEasyCount : numEasyCount
+                , NumDifficultCount : numDifficultCount
+                , DateNextView : dateNextView
+                , DateLastView : dateLastView
+             } = req.body; 
 
-            const { idDeck , front , verse } = req.body;
+            console.log(req.body)
 
-            base.isParametreRequired({idDeck, front, verse})
+            base.isParametreRequired({ 
+                _id , idDeck, front, verse, isReviewed, numGoodCount
+                , numEasyCount, numDifficultCount, dateNextView, dateLastView
+            })
 
             const deck = await Deck.findById(idDeck)
 
@@ -106,7 +121,10 @@ const cardController = ( function(app) {
                 return res.status(codHttp.badRequest)
                     .send(new BadRequestResponse('block card does not exist', [`id block card: ${idDeck}`]))
 
-            const card = await Card.create({deck , front , verse, isActive : true});
+            const card = await Card.create({  
+                _id, deck, idDeck, front, verse, isReviewed, numGoodCount
+                , numEasyCount, numDifficultCount, dateNextView, dateLastView, isActive : true
+            });
 
             res.send(card);
 
@@ -135,14 +153,37 @@ const cardController = ( function(app) {
     */
     router.put(`${pathCard.put}`, async (req, res) => {
         try {
+            const { 
+                Id: id 
+                , IdDeck : idDeck 
+                , Front : front 
+                , Verse : verse
+                , IsReviewed : isReviewed
+                , IsActive : isActive
+                , NumGoodCount : numGoodCount
+                , NumEasyCount : numEasyCount
+                , NumDifficultCount : numDifficultCount
+                , DateNextView : dateNextView
+                , DateLastView : dateLastView
+             } = req.body; 
 
-            let id = req.params.id
+            console.log(req.body)
 
-            res.send({ mensagem: `ok put id : ${id}` });
+            base.isParametreRequired({ 
+                id , idDeck, front, verse, isReviewed, numGoodCount
+                , numEasyCount, numDifficultCount, dateNextView, dateLastView, isActive
+            })
+
+            await Card.findByIdAndUpdate( id , { 
+                idDeck, front, verse, isReviewed, numGoodCount
+                , numEasyCount, numDifficultCount, dateNextView, dateLastView, isActive
+            }, { new: true })  
+
+            res.send(await Card.findById(id));
 
         } catch (err) {
 
-            res.status(codHttp.badRequest).send({ error: 'Erro ao carregar anotacao' });
+            base.error(res , err)
         }
     });
 

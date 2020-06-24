@@ -49,6 +49,7 @@ const express = require('express')
             res.send({
                 student,
                 token: generetToken({ id: student.id }),
+                isPrimeiroAcesso : true
             });
 
         }

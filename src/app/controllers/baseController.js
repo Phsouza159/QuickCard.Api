@@ -24,7 +24,7 @@ baseController.isParametreRequired = function(argumentosList) {
 
   
     ags.map( arg => {
-        if(arg == undefined || arg == '') {
+        if(arg === undefined || arg === '') {
                 
             notifications.push(`this '${key[index - 1]}' parametre is required`)
             isInValid = true      

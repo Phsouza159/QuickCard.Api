@@ -1,6 +1,5 @@
 const mongoose = require('@dataBase')
-    , Schema = mongoose.Schema
-    , ObjectId = Schema.ObjectId;
+    , { v4: uuidv4 } = require('uuid')
 /**
  * @typedef Card
  * @property {string} _id - id card  
@@ -10,8 +9,12 @@ const mongoose = require('@dataBase')
  * @property {boolean} isActive - flag active 
  */
 const CardSchema = new mongoose.Schema({
+    _id: { 
+        type: String, 
+        default: uuidv4 
+    } ,
     deck: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Deck',
         required: true,
     },
@@ -23,6 +26,26 @@ const CardSchema = new mongoose.Schema({
         type: String,
         required: true,
     }, 
+    dateLastView: {
+        type: Date,
+        required: false,
+    },
+    dateNextView: {
+        type: Date,
+        required: false,
+    },
+    numDifficultCount: {
+        type: Number,
+        required: false,
+    },
+    numGoodCount: {
+        type: Number,
+        required: false,
+    },
+    isReviewed: {
+        type: Boolean,
+        required: true
+    },
     isActive: {
         type: Boolean,
         required: true

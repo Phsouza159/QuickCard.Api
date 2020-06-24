@@ -100,16 +100,16 @@ const deckController = ( function(app){
     */
     router.post(`${pathDeck.post}`, async (req, res) => {
         try {
-
-
-            const { name } = req.body
+            const { Name , Id } = req.body
                 , idStudent = req._user.id
 
-            base.isParametreRequired({idStudent , name})
+            console.log(req.body)
+
+            base.isParametreRequired({idStudent , Name, Id})
 
             const student = await Student.findById(idStudent)
 
-            const deck = await Deck.create({student , name , isActive : true});
+            const deck = await Deck.create({student , name : Name, _id : Id, isActive : true});
 
             res.send(deck);
 
@@ -140,10 +140,11 @@ const deckController = ( function(app){
     router.put(`${pathDeck.put}`, async (req, res) => {
         try {
 
-            let id = req.params.id
-                , name = req.body.name
+            const { Id: id , Name: name , IsActive : isActive } = req.body
 
-            base.isParametreRequired({id , name})
+            console.log(req.body)
+
+            base.isParametreRequired({id , name , isActive})
 
             const deck = await Deck.findById(id);
 
@@ -151,9 +152,9 @@ const deckController = ( function(app){
                 return res.status(codHttp.badRequest)
                     .send(new BadRequestResponse('deck does not exist', [`id: ${id} deck does not exist`]))              
                     
-                    
             await Deck.findByIdAndUpdate( id , { 
                 name 
+                , isActive
             }, { new: true })        
 
             res.send(await Deck.findById(id));

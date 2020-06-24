@@ -1,4 +1,5 @@
-const mongoose = require('@dataBase');
+const mongoose = require('@dataBase')
+    , { v4: uuidv4 } = require('uuid')
 
 /**
  * @typedef Deck
@@ -9,8 +10,12 @@ const mongoose = require('@dataBase');
  * @property {boolean} isActive - flag active 
  */
 const DeckdSchema = new mongoose.Schema({
+    _id: { 
+        type: String, 
+        default: uuidv4 
+    } ,
     student: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Student',
         required: true,
     },
@@ -19,7 +24,7 @@ const DeckdSchema = new mongoose.Schema({
         required: true,
     },
     card: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Card',
     }],
     isActive: {
