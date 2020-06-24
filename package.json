@@ -5,8 +5,8 @@
   "repository": "https://github.com/henrique770/Backend-QuickCard",
   "author": "Bianklin Bessa Rizzi <bianklinb@gmail.com>",
   "scripts": {
-    "start": "nodemon ./index.js PORT=80",
-    "teste": "nodemon src/teste/index.js",
+    "start": "node ./index.js",
+    "dev_start": "nodemon src/teste/index.js",
     "docs": "swagger-to-md ./docs/api-docs.json "
   },
   "license": "MIT",
