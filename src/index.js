@@ -6,9 +6,9 @@ const alias = require('module-alias/register')
     , registreSwegger = require('./config/swegger.config')
     , fs = require('fs')
     , pathController = `${__dirname}/app/controllers`
-    , portServer = 3000
+    , portServer = process.env.APP_PORT
 
-var server = ( async (app) => {
+var server = ((app) => {
 
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: false }))
@@ -16,7 +16,7 @@ var server = ( async (app) => {
     app.use(errorLogger)
 
 
-    const controllers = await fs.readdirSync(pathController)
+    const controllers = fs.readdirSync(pathController)
     
     controllers.map( controller => {
         try{
@@ -30,11 +30,17 @@ var server = ( async (app) => {
         }
     })
 
-    app.listen(portServer)
-    registreSwegger(app)
-
-    console.info(`Server listen on port ${portServer}`)
-
-    return app
+    return {
+        start : () => {
+            app.listen(portServer)
+            registreSwegger(app)
+        
+            console.info(`Server listen on port ${portServer}`)
+        
+            return app
+        }
+    }
 
 })(express())
+
+module.exports = server;
