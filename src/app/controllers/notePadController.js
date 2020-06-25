@@ -99,9 +99,13 @@ const notePadController = ( function(app){
     router.post(`${pathNotePad.post}`, async (req, res) => {
         try {
 
-            const { idStudent , name } = req.body
-            base.isParametreRequired(res, {idStudent, name})
+            const { Id : _id , Name: name } = req.body
+                , idStudent = req._user.id
 
+            console.log(req.body)
+
+            base.isParametreRequired({ _id, idStudent, name})
+            
             const student = await Student.findById(idStudent)
 
             if(!student)

@@ -6,7 +6,7 @@
   "author": "Bianklin Bessa Rizzi <bianklinb@gmail.com>",
   "scripts": {
     "start": "node ./index.js",
-    "dev_start": "nodemon src/teste/index.js",
+    "dev_start": "nodemon ./index.js",
     "docs": "swagger-to-md ./docs/api-docs.json "
   },
   "license": "MIT",
