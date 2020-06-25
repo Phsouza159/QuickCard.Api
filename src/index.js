@@ -6,7 +6,7 @@ const alias = require('module-alias/register')
     , registreSwegger = require('./config/swegger.config')
     , fs = require('fs')
     , pathController = `${__dirname}/app/controllers`
-    , portServer = 3000 //process.env.PORT || 3000
+    , portServer = process.env.PORT || 3000
 
 var server = ((app) => {
 

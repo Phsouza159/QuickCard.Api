@@ -96,9 +96,12 @@ var noteController = ( function(app){
   router.post(`${pathNote.post}`, async (req, res) => {
     try {
 
-      const { idStudent, idNotePad, content, name } = req.body
+      const { IdNotePad : idNotePad, Content : content, Title : title } = req.body
+        , idStudent = req._user.id
+        
+      base.isParametreRequired({idNotePad, content, title })
 
-      base.isParametreRequired({ idStudent, idNotePad, content, name })
+      console.log(req.body)
 
       const notePad = await NotePad.findById(idNotePad)
         , student = await Student.findById(idStudent)
@@ -111,7 +114,7 @@ var noteController = ( function(app){
         return res.send(codHttp.badRequest)
           .send(new BadRequestResponse('student does not exist', [`student does not exist by id ${idStudent}`]))
 
-      const note = await Note.create({ student, notePad, name, content, isActive: true });
+      const note = await Note.create({ student, notePad, title, content, isActive: true });
 
       res.send(note)
 
