@@ -5,7 +5,8 @@ const database = ((mongoose) => {
             , host = '177.133.30.238'
             , base = 'quickcarddb'
             , urlDatabase = `mongodb://${host}:${port}/${base}` 
-            , urlNuvem = `mongodb+srv://quickcard:TujqN8Q3MdCe8Wbi@quickcard-ggofu.mongodb.net/database?retryWrites=true&w=majority`
+            , urlNuvem = `mongodb+srv://quickcard:8VwHDiLdctura1es@quickcarddb.ggofu.mongodb.net/quickcarddb?retryWrites=true&w=majority`
+                          
             , url = ''
             , isLocal = false
             , options = {
