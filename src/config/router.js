@@ -2,6 +2,9 @@
 const baseApi = '/api'
 
 module.exports = {
+
+    home : '' ,
+
     v1 : {
 
         synchronism : {
