@@ -147,13 +147,14 @@ var noteController = ( function(app){
 
       let id = req.params.id
 
-      const { Content : content, Name : name } = req.body
+      const { Content : content, Title : title , IsActive : isActive} = req.body
 
-      base.isParametreRequired({ id , content, name })
+      base.isParametreRequired({ id , content, title , isActive})
 
       await Note.findByIdAndUpdate(id, {
         content
-        , name
+        , title
+        , isActive
       }, { new: true })
 
       res.send(await Note.findById(id));
