@@ -145,18 +145,18 @@ var noteController = ( function(app){
   router.put(`${pathNote.put}`, async (req, res) => {
     try {
 
-      let Id = req.params.id
+      let id = req.params.id
 
       const { Content : content, Name : name } = req.body
 
-      base.isParametreRequired({ Id , Content, Name })
+      base.isParametreRequired({ id , content, name })
 
-      await Note.findByIdAndUpdate(Id, {
+      await Note.findByIdAndUpdate(id, {
         content
         , name
       }, { new: true })
 
-      res.send(await Note.findById(Id));
+      res.send(await Note.findById(id));
 
     } catch (err) {
 
