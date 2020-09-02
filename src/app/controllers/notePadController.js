@@ -144,7 +144,7 @@ const notePadController = ( function(app){
         try {
 
             const id = req.params.id
-            const { name } = req.body
+            const { Name : name } = req.body
 
             base.isParametreRequired({name})
 
