@@ -99,12 +99,12 @@ const notePadController = ( function(app){
     router.post(`${pathNotePad.post}`, async (req, res) => {
         try {
 
-            const { Id : id , Name: name } = req.body
+            const { Id : _id , Name: name } = req.body
                 , idStudent = req._user.id
 
             console.log(req.body)
 
-            base.isParametreRequired({ id, idStudent, name})
+            base.isParametreRequired({ _id, idStudent, name})
             
             const student = await Student.findById(idStudent)
 
@@ -112,7 +112,7 @@ const notePadController = ( function(app){
                 return res.status(codHttp.badRequest)
                     .send(new BadRequestResponse('student does not exist' , [`student does not exist by id ${idStudent}`]))
 
-            const notePad = await NotePad.create({id , student , name , isActive : true});
+            const notePad = await NotePad.create({_id , student , name , isActive : true});
 
             res.send(notePad)
 
