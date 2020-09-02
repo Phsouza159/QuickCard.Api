@@ -144,7 +144,7 @@ const notePadController = ( function(app){
         try {
 
             const id = req.params.id
-            const { Name : name } = req.body
+            const { Name : name , IsActive : isActive} = req.body
 
             base.isParametreRequired({name})
 
@@ -156,6 +156,7 @@ const notePadController = ( function(app){
 
             await NotePad.findByIdAndUpdate( id , { 
                 name : name
+                , isActive
             }, { new: true })
 
 
