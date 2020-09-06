@@ -1,5 +1,5 @@
 
-const BadRequestException = function( message , notification) {
+const BadRequestException = function( message , notification = []) {
 
     this.status = 400
     this.name = "Bad request exception erro"

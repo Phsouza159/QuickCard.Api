@@ -1,6 +1,7 @@
 const alias = require('module-alias/register')
     , express = require('express')
     , bodyParser = require('body-parser')
+    , cors = require('cors')
     , { requestLogger 
         , errorLogger } = require('@service/loggerService')
     , registreSwegger = require('./config/swegger.config')
@@ -14,7 +15,7 @@ var server = ((app) => {
     app.use(bodyParser.urlencoded({ extended: false }))
     app.use(requestLogger)
     app.use(errorLogger)
-
+    app.use(cors())
 
     const controllers = fs.readdirSync(pathController)
     

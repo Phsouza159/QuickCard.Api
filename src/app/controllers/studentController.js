@@ -9,6 +9,8 @@ const express = require('express')
     , StudentCreateResponse = require('@response/studentCreateResponse')
     , router = express.Router()
     , pathStudent = pathRoute.v1.student
+    , bcrypt = require('bcryptjs')
+    , BadRequestException = require('@exception/badRequestException')
 
 const studentController = ( function(app){
 
@@ -139,12 +141,21 @@ const studentController = ( function(app){
     router.put(`${pathStudent.put}`, async (req, res) => {
         try {
 
-            const args = { email, name, password } = req.body
-            args.id = req.params.id
+            const { Email: email, Name: name, Password: password } = req.body
+             id = req.params.id
+             student = await Student.findById(id).select('+password');
 
-            base.isParametreRequired({ id: args.id , email: args.email, name: args.name, password: args.password })
+            base.isParametreRequired({ id: id , email , name, password })
 
-            let student = await Student.update(args)
+            if(!await bcrypt.compare(password, student.password)) {
+                throw new BadRequestException("invalid password")
+            }
+
+            student.email = email
+            student.name = name
+            student.password = password
+
+            student = await Student.update(student)
 
             return res.send(student);
 

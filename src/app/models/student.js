@@ -46,11 +46,22 @@ const Student = mongoose.model('Student', StudentSchema);
 
 Student.update = async function( args ) {
 
-    await this.findByIdAndUpdate( args.id , { 
-        name : args.name
-        ,email : args.email
-        ,password : await bcryptjs.hash(args.password, 10) 
-    }, { new: true })
+
+    // update to password
+    if(args.password === undefined) {
+        await this.findByIdAndUpdate( args.id , { 
+            name : args.name
+            ,email : args.email
+        }, { new: true })
+    }
+
+    else {
+        await this.findByIdAndUpdate( args.id , { 
+            name : args.name
+            ,email : args.email
+            ,password : await bcryptjs.hash(args.password, 10) 
+        }, { new: true })
+    }
 
     return await this.findById(args.id)
 } 
