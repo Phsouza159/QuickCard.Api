@@ -29,6 +29,11 @@ const StudentSchema = new mongoose.Schema({
         required: true,
         select: false,
     },
+    imgPerfil : {
+        type: String,
+        required: false,
+        select: false,
+    },
     isActive: {
         type: Boolean,
         required: true
@@ -48,10 +53,11 @@ Student.update = async function( args ) {
 
 
     // update to password
-    if(args.password === undefined) {
+    if(args.password == null) {
         await this.findByIdAndUpdate( args.id , { 
             name : args.name
             ,email : args.email
+            ,imgPerfil : args.imgPerfil
         }, { new: true })
     }
 
@@ -59,6 +65,7 @@ Student.update = async function( args ) {
         await this.findByIdAndUpdate( args.id , { 
             name : args.name
             ,email : args.email
+            ,imgPerfil : args.imgPerfil
             ,password : await bcryptjs.hash(args.password, 10) 
         }, { new: true })
     }

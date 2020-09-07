@@ -11,8 +11,14 @@ const alias = require('module-alias/register')
 
 var server = ((app) => {
 
-    app.use(bodyParser.json())
-    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.json({
+        limit: '8mb'
+    }))
+    app.use(bodyParser.urlencoded({
+        limit: '8mb',
+        parameterLimit: 100000,
+        extended: false 
+    }))
     app.use(requestLogger)
     app.use(errorLogger)
     app.use(cors())

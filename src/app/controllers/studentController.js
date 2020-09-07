@@ -96,10 +96,10 @@ const studentController = ( function(app){
     router.post(`${pathStudent.post}`, async (req, res) => {
         try {
 
-            const args = { email, name, password } = req.body
-            
-            args.isActive = true
-            
+
+            const args = { email, name, password, imgPerfil } = req.body
+           
+             args.isActive = true
             base.isParametreRequired({ email: args.email, name: args.name, password: args.password })
 
             if (await Student.findOne({ email: args.email }))
@@ -107,11 +107,11 @@ const studentController = ( function(app){
                     .send(new BadRequestResponse('User already exists', [`email: ${args.email} email already registered`]))
 
 
-            let student = await Student.create(args);
+           let student = await Student.create(args);
+           
+           student.password = undefined
+           res.send(new StudentCreateResponse(student, generetToken({ id: student.id })))
 
-            student.password = undefined
-
-            res.send(new StudentCreateResponse(student, generetToken({ id: student.id })))
 
         } catch (err) {
 
@@ -141,21 +141,32 @@ const studentController = ( function(app){
     router.put(`${pathStudent.put}`, async (req, res) => {
         try {
 
-            const { Email: email, Name: name, Password: password } = req.body
+            const { Email: email, Name: name, Password: password, OldPassword : oldPassword , ImgPerfil : imgPerfil} = req.body
              id = req.params.id
              student = await Student.findById(id).select('+password');
 
-            base.isParametreRequired({ id: id , email , name, password })
+            base.isParametreRequired({ id: id, email, name})
 
-            if(!await bcrypt.compare(password, student.password)) {
-                throw new BadRequestException("invalid password")
+
+            if(password != null && oldPassword != null) {
+    
+                if(!await bcrypt.compare(oldPassword, student.password)) {
+                    throw new BadRequestException("invalid password")
+                }
+
+                student.password = password
+            }  else {
+                student.password = null
             }
 
             student.email = email
             student.name = name
-            student.password = password
+            student.imgPerfil = imgPerfil != null ? imgPerfil : student.imgPerfil
 
             student = await Student.update(student)
+
+            student.imgPerfil = null
+            console.log(imgPerfil.substring(0,15))
 
             return res.send(student);
 

@@ -3,6 +3,7 @@ const Card = require('@models/card')
     , Note = require('@models/note')
     , NotePad = require('@models/notePad')
     , Student = require('@models/student')
+    , BadRequestException = require('@exception/badRequestException')
 
 const SynchronismServe = (function(){
 
@@ -11,7 +12,7 @@ const SynchronismServe = (function(){
 
 SynchronismServe.prototype.getSync = async idStudent => {
 
-    const student = await Student.findById(idStudent)
+    const student = await Student.findById(idStudent).select('+imgPerfil')
 
     if(!student)
         throw new BadRequestException('Student is not exist')

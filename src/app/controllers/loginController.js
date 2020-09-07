@@ -32,7 +32,7 @@ const express = require('express')
         try{
 
             const args = { email, password } = req.body
-                , student = await Student.findOne({ email : args.email }).select('+password');
+                , student = await Student.findOne({ email : args.email }).select('+password').select('+imgPerfil');
 
             base.isParametreRequired({ email: args.email, password: args.password })
 
