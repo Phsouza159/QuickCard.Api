@@ -34,6 +34,18 @@ const CardSchema = new mongoose.Schema({
         type: Date,
         required: false,
     },
+    displayDeadline: {
+        type: Date,
+        required: false,
+    },
+    codEnumHit : {
+        type: Number,
+        required: false,
+    } ,
+    numEasyCount : {
+        type: Number,
+        required: false,
+    } ,
     numDifficultCount: {
         type: Number,
         required: false,

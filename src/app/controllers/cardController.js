@@ -96,7 +96,7 @@ const cardController = ( function(app) {
     router.post(`${pathCard.post}`, async (req, res) => {
         try {
             const { 
-                Id: _id 
+                Id : _id 
                 , IdDeck : idDeck 
                 , Front : front 
                 , Verse : verse
@@ -106,13 +106,15 @@ const cardController = ( function(app) {
                 , NumDifficultCount : numDifficultCount
                 , DateNextView : dateNextView
                 , DateLastView : dateLastView
+                , DisplayDeadline : displayDeadline
+                , CodEnumHit : codEnumHit
              } = req.body; 
 
             console.log(req.body)
 
             base.isParametreRequired({ 
                 _id , idDeck, front, verse, isReviewed, numGoodCount
-                , numEasyCount, numDifficultCount, dateNextView, dateLastView
+                , numEasyCount, numDifficultCount, dateNextView, dateLastView , displayDeadline, codEnumHit
             })
 
             const deck = await Deck.findById(idDeck)
@@ -123,7 +125,7 @@ const cardController = ( function(app) {
 
             const card = await Card.create({  
                 _id, deck, idDeck, front, verse, isReviewed, numGoodCount
-                , numEasyCount, numDifficultCount, dateNextView, dateLastView, isActive : true
+                , numEasyCount, numDifficultCount, dateNextView, dateLastView, displayDeadline, codEnumHit, isActive : true
             });
 
             res.send(card);
@@ -165,18 +167,20 @@ const cardController = ( function(app) {
                 , NumDifficultCount : numDifficultCount
                 , DateNextView : dateNextView
                 , DateLastView : dateLastView
+                , DisplayDeadline : displayDeadline
+                , CodEnumHit : codEnumHit
              } = req.body; 
 
             console.log(req.body)
 
             base.isParametreRequired({ 
                 id , idDeck, front, verse, isReviewed, numGoodCount
-                , numEasyCount, numDifficultCount, dateNextView, dateLastView, isActive
+                , numEasyCount, numDifficultCount, dateNextView, dateLastView, displayDeadline, codEnumHit, isActive
             })
 
             await Card.findByIdAndUpdate( id , { 
                 idDeck, front, verse, isReviewed, numGoodCount
-                , numEasyCount, numDifficultCount, dateNextView, dateLastView, isActive
+                , numEasyCount, numDifficultCount, dateNextView, dateLastView, displayDeadline, codEnumHit, isActive
             }, { new: true })  
 
             res.send(await Card.findById(id));

@@ -143,7 +143,7 @@ const studentController = ( function(app){
 
             const { Email: email, Name: name, Password: password, OldPassword : oldPassword , ImgPerfil : imgPerfil} = req.body
              id = req.params.id
-             student = await Student.findById(id).select('+password');
+             student = await Student.findById(id).select('+password').select('+imgPerfil');
 
             base.isParametreRequired({ id: id, email, name})
 
@@ -159,15 +159,16 @@ const studentController = ( function(app){
                 student.password = null
             }
 
+            if(imgPerfil != null) {
+                student.imgPerfil = imgPerfil 
+            }
+
             student.email = email
             student.name = name
-            student.imgPerfil = imgPerfil != null ? imgPerfil : student.imgPerfil
 
             student = await Student.update(student)
 
             student.imgPerfil = null
-            console.log(imgPerfil.substring(0,15))
-
             return res.send(student);
 
         } catch (err) {
