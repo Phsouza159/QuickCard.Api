@@ -12,7 +12,7 @@ const SynchronismServe = (function(){
 
 SynchronismServe.prototype.getSync = async idStudent => {
 
-    const student = await Student.findById(idStudent).select('+imgPerfil')
+    const student = await Student.findById(idStudent)
 
     if(!student)
         throw new BadRequestException('Student is not exist')

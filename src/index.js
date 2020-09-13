@@ -8,6 +8,7 @@ const alias = require('module-alias/register')
     , fs = require('fs')
     , pathController = `${__dirname}/app/controllers`
     , portServer = process.env.PORT || 3000
+    , peerServer = require('./app/peerServer/peerServer')
 
 var server = ((app) => {
 
@@ -39,11 +40,13 @@ var server = ((app) => {
 
     return {
         start : () => {
-            app.listen(portServer)
+            let server = app.listen(portServer)
             registreSwegger(app)
         
             console.info(`Server listen on port ${portServer}`)
         
+            peerServer(server, app)
+
             return app
         }
     }

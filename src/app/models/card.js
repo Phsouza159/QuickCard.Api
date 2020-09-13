@@ -54,6 +54,10 @@ const CardSchema = new mongoose.Schema({
         type: Number,
         required: false,
     },
+    baseHours : {
+        type: Number,
+        required: false,
+    } ,
     isReviewed: {
         type: Boolean,
         required: true
