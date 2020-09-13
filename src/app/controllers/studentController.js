@@ -76,6 +76,57 @@ const studentController = ( function(app){
 
     //#endregion
 
+    //#region Onget by image profile
+
+    /**
+     * Route to recover image profile from student by ID
+     * @route GET /student/{id}
+     * @param {string} id.path - id student
+     * @group student - Retrieve students
+     * @operationId retrieveNoteInfoById
+     * @produces application/json
+     * @returns {Student} 200 - Image profile
+     * @returns {BadRequestResponse.model} 400 - Object bad request
+     * @returns {object} 401 - Object authorization required
+     * @returns {object} 500 - Objeto internal Serve Erro
+     * @security JWT
+     */
+    router.get(`${pathStudent.getImgProfileById}`, async (req, res) => {
+        try {
+
+            let id = req.params.id
+            let student = await Student.findById(id).select('+imgPerfil');
+
+            if(student == null) {
+                throw new BadRequestException('student does not exist' , [ 'Id invalid: ' + id])
+            }
+
+            if(student.imgPerfil == null){
+                return res.status(404).send()
+            }
+            
+            let data = student.imgPerfil.substring(student.imgPerfil.indexOf('base64,') + 'base64,'.length, student.imgPerfil.length)
+            let img = Buffer.from( data, 'base64');
+
+            console.log(data.substring(0,50))
+
+            res.writeHead(200, {
+                'Content-Type': 'image/jpg',
+                'Content-Length': img.length
+            });
+
+            res.end(img)
+
+
+        } catch (err) {
+
+            base.error(res, err)
+        }
+    });
+
+    //#endregion
+
+
     //#region OnPost
 
     /**

@@ -25,6 +25,7 @@ module.exports = {
             base: `${baseApi}/v1/student` 
             ,get : '/' 
             ,getById : '/:id' 
+            ,getImgProfileById : '/imgProfile/:id'
             ,post : '/'
             ,put : '/:id'
             ,delete : '/:id'
