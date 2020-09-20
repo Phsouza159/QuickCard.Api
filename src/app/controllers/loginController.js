@@ -50,7 +50,7 @@ const express = require('express')
                 student,
                 token: generetToken({ id: student.id }),
                 isPrimeiroAcesso : true
-            });
+            })
 
         }
         catch(err){

@@ -15,13 +15,17 @@ const synchronismController = ( (app) => {
 
     router.get(`${pathSynchronism.get}` , async (req , res) => {
         try{
-            const id = req.params.id
+            const user = req._user
 
-            var synchronismServe = new SynchronismServe()
+            if(user != undefined) {
+                var synchronismServe = new SynchronismServe()
 
-            let response = await synchronismServe.getSync(id)
+                let response = await synchronismServe.getSync(user.id)
+    
+                return res.send(response)
+            }
 
-            res.send(response)
+            throw BadRequestException('Invalid user for syronism');
         }
         catch(err){
             base.error(res, err)

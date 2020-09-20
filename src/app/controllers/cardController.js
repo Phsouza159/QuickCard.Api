@@ -8,6 +8,7 @@ const express = require('express')
     , router = express.Router()
     , pathRoute = require('@config/router')
     , pathCard = pathRoute.v1.card
+    , { peerService , typeClient } = require('@peerServer/peerService')
 
 
 const cardController = ( function(app) {
@@ -95,7 +96,7 @@ const cardController = ( function(app) {
     */
     router.post(`${pathCard.post}`, async (req, res) => {
         try {
-            const { 
+            let { 
                 Id : _id 
                 , IdDeck : idDeck 
                 , Front : front 
@@ -105,17 +106,25 @@ const cardController = ( function(app) {
                 , NumGoodCount : numGoodCount
                 , NumEasyCount : numEasyCount
                 , NumDifficultCount : numDifficultCount
-                , DateNextView : dateNextView
+                , DateNextView : dateNextView 
                 , DateLastView : dateLastView
                 , DisplayDeadline : displayDeadline
                 , CodEnumHit : codEnumHit
-             } = req.body; 
+             } = req.body
+             
+             isReviewed = setDefaultValue(isReviewed, false)
+             baseHours = setDefaultValue(baseHours, 0)
+             numGoodCount = setDefaultValue(numGoodCount, 0)
+             numEasyCount = setDefaultValue(numEasyCount, 0)
+             numDifficultCount = setDefaultValue(numDifficultCount, 0)
+             codEnumHit = setDefaultValue(codEnumHit, 0)
+              
 
             console.log(req.body)
 
             base.isParametreRequired({ 
                 _id , idDeck, front, verse, isReviewed, numGoodCount
-                , numEasyCount, numDifficultCount, dateNextView, dateLastView , displayDeadline, codEnumHit , baseHours
+                , numEasyCount, numDifficultCount, codEnumHit , baseHours
             })
 
             const deck = await Deck.findById(idDeck)
@@ -127,15 +136,26 @@ const cardController = ( function(app) {
             const card = await Card.create({  
                 _id, deck, idDeck, front, verse, isReviewed, numGoodCount
                 , numEasyCount, numDifficultCount, dateNextView, dateLastView, displayDeadline, codEnumHit, baseHours, isActive : true
-            });
+            })
 
-            res.send(card);
+            res
+                .send(card)
+                .peerMiddlerware()
 
         } catch (err) {
 
             base.error(res , err)
         }
     })
+
+    let setDefaultValue = (value , defaultValue) => {
+        if(value != undefined && value != '') {
+            return value
+        }
+
+        return defaultValue
+    }
+
 
     //#endregion 
 
@@ -173,7 +193,13 @@ const cardController = ( function(app) {
                 , CodEnumHit : codEnumHit
              } = req.body; 
 
-            console.log(req.body)
+            //console.log(req.body)
+
+            //peerService.notifaction( req._user.id, typeClient.MOBILE , {
+            //    type : '@card/update' ,
+            //    playord : { mensagem : 'update to card'}
+            //})
+
 
             base.isParametreRequired({ 
                 id , idDeck, front, verse, isReviewed, numGoodCount
@@ -185,7 +211,10 @@ const cardController = ( function(app) {
                 , numEasyCount, numDifficultCount, dateNextView, dateLastView, displayDeadline, codEnumHit, baseHours, isActive
             }, { new: true })  
 
-            res.send(await Card.findById(id));
+            res
+                .peerMiddlerware()
+                .send(await Card.findById(id))  
+                
 
         } catch (err) {
 

@@ -9,12 +9,78 @@ const express = require('express')
     , router = express.Router()
     , pathRoute = require('@config/router')
     , pathDeck = pathRoute.v1.deck
+    , { peerService , typeClient } = require('@peerServer/peerService')
 
 const deckController = ( function(app){
     
     // authentication
     if (!pathDeck.allowanonymous)
         router.use(authMiddleware);
+
+    //#region OnGet Info Decks
+
+/**
+    * Route to recover decks info
+    * @route GET /deck/infoDecks
+    * @param {string} id.path - id deck
+    * @group Deck - Retrieve info decks 
+    * @operationId retrieveDecks
+    * @produces application/json
+    * @returns {Any} 200 - List object note
+    * @returns {BadRequestResponse.model} 400 - Object bad request
+    * @returns {object} 401 - Object authorization required
+    * @returns {object} 500 - Objeto internal Serve Erro
+    * @security JWT
+    */
+   router.get(`${pathDeck.getInfoDecks}`, async (req, res) => {
+        try {
+
+            const user = req._user
+                , decks = await Deck.find({ 'student' : user.id })
+                , deckInfo = []
+
+            if(decks)
+            {
+                for(let i = 0; i < decks.length ; i += 1)
+                {
+                    let deck = decks[i]
+                        , cards = await Card.find({'deck' : deck.id})
+                        , cardsInfo = []
+
+                    if(!deck.isActive)
+                        continue
+                        
+                    cards.map( card => {
+                        if(card.isActive) {
+                            cardsInfo.push({
+                                isReviewed : card.isReviewed
+                            })
+                        }
+                    })
+
+                    deckInfo.push({
+                        _id : deck.id
+                        , name : deck.name
+                        , count : cardsInfo.length
+                        , isReviewed : cardsInfo.filter( e => e.isReviewed).length
+                        , isNotReviewed : cardsInfo.filter( e => !e.isReviewed).length
+                        , isActive : true
+                    })
+                }
+            }
+
+            res.send( deckInfo )
+
+
+        } catch (err) {
+
+            base.error(res , err)
+        }
+    })
+
+
+    //#endregion
+
 
     //#region OnGet
 
@@ -105,6 +171,7 @@ const deckController = ( function(app){
 
             console.log(req.body)
 
+
             base.isParametreRequired({idStudent , Name, Id})
 
             const student = await Student.findById(idStudent)
@@ -143,6 +210,12 @@ const deckController = ( function(app){
             const { Id: id , Name: name , IsActive : isActive } = req.body
 
             console.log(req.body)
+
+            peerService.notifaction( req._user.id, typeClient.MOBILE , {
+                type : '@deck/update' ,
+                playord : { mensagem : 'update to deck'}
+            })
+
 
             base.isParametreRequired({id , name , isActive})
 

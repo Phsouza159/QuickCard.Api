@@ -3,16 +3,24 @@ const baseApi = '/api'
 
 module.exports = {
 
+    base : `${baseApi}/v1`,
+
     home : '' ,
 
     v1 : {
 
         synchronism : {
-            allowanonymous : true,
+            allowanonymous : false,
             base: `${baseApi}/v1/synchronism` 
-            ,get : '/:id'
-            ,post : '/:id'
+            ,get : '/'
         } ,
+
+        wrtc : {
+            base: `/webrtc`,
+            get : `/clients`,
+            disconnect : `/disconnectClient/:id`,
+            registreClient : '/registreConnect/:idHub/:idClient/:type'
+        } , 
 
         login : {
             allowanonymous : true,
@@ -55,7 +63,8 @@ module.exports = {
             allowanonymous : false,
             base: `${baseApi}/v1/deck` 
             ,get : '/' 
-            ,getById : '/:id' 
+            ,getById : '/:id'
+            ,getInfoDecks : '/info' 
             ,post : '/'
             ,put : '/:id'
             ,delete : '/:id'
