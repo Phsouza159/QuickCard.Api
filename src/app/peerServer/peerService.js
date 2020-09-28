@@ -95,8 +95,9 @@ const peerService = (() => {
 
     self.start = function(server) {
         self.peer = ExpressPeerServer(server, {
-            path: '',
-            debug: 3,
+            path: ''
+            , debug: 3
+            , alive_timeout : 10000
         });
 
         self.registrePeer()
@@ -172,16 +173,24 @@ const peerService = (() => {
         let customer = getCustomer(id, type)
        
         if(customer !== undefined){
+            try {
+              
+                let send = {
+                    type : 'data'
+                    , payload : data
+                }
+    
+                customer.client.send(send)
+                return true
 
-            let send = {
-                type : 'data'
-                , payload : data
+            } catch(e) {
+
+                console.log('Erro to send menssag in socket' , e)
             }
-
-            customer.client.send(send)
-        } else {
-            
-        }
+           
+        } 
+    
+        return false
     }
 
     return self

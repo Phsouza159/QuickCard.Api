@@ -26,22 +26,8 @@ const peerServer = (server, app) => {
 
 
   router.get(peerPath.get, async (req, res) => {
-    try{
-
-      let customer = peerService.getData()[0]
-
-      if(customer != undefined) {
-
-        peerService.notifaction(customer.id, typeClient.MOBILE , { type : '@hello' , mensagem : 'ola'})
-      }
-
-
-    }catch(e) {
-      console.log(e)
-    }
-
-
-    res.send(peerService.getData())
+    let data = peerService.getData()
+    res.send(data)
   })
 
   /*

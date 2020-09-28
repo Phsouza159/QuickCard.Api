@@ -2,6 +2,7 @@ const alias = require('module-alias/register')
     , express = require('express')
     , bodyParser = require('body-parser')
     , peerMiddlewares = require('@middlewares/peerMiddlewares')
+    , pendenciesMiddleware = require('@middlewares/pendenciesMiddleware')
     , cors = require('cors')
     , { requestLogger 
         , errorLogger } = require('@service/loggerService')
@@ -25,6 +26,7 @@ var server = ((app) => {
     app.use(errorLogger)
     app.use(cors())
     app.use(peerMiddlewares)
+    app.use(pendenciesMiddleware)
 
     const controllers = fs.readdirSync(pathController)
     
