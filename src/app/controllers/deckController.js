@@ -176,9 +176,12 @@ const deckController = ( function(app){
 
             const student = await Student.findById(idStudent)
 
-            const deck = await Deck.create({student , name : Name, _id : Id, isActive : true});
+            const deck = await Deck.create({student , name : Name, _id : Id, isActive : true})
 
-            res.send(deck);
+            res
+                .peerMiddlerware()
+                .pendenciesMiddleware()
+                .send(deck)
 
         } catch (err) {
 
@@ -230,7 +233,9 @@ const deckController = ( function(app){
                 , isActive
             }, { new: true })        
 
-            res.send(await Deck.findById(id));
+            res.peerMiddlerware()
+               .pendenciesMiddleware()
+               .send(await Deck.findById(id))
 
         } catch (err) {
 

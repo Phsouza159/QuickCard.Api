@@ -1,6 +1,7 @@
 const express = require('express')
     , authMiddleware = require('@middlewares/autenticacao')
     , SynchronismServe = require('@service/synchronismService')
+    , PendingService = require('@service/pendingService')
     , BadRequestException = require('@exception/badRequestException')    
     , base = require('./baseController')
     , router = express.Router()
@@ -21,6 +22,8 @@ const synchronismController = ( (app) => {
                 var synchronismServe = new SynchronismServe()
 
                 let response = await synchronismServe.getSync(user.id)
+
+                PendingService.deletePendings(user)
     
                 return res.send(response)
             }

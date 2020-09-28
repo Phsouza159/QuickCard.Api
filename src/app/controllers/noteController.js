@@ -96,10 +96,10 @@ var noteController = ( function(app){
   router.post(`${pathNote.post}`, async (req, res) => {
     try {
 
-      const { IdNotePad : idNotePad, Content : content, Title : title } = req.body
+      const { Id : _id , IdNotePad : idNotePad, Content : content, Title : title } = req.body
         , idStudent = req._user.id
         
-      base.isParametreRequired({idNotePad, content, title })
+      base.isParametreRequired({_id, idNotePad, content, title })
 
       console.log(req.body)
 
@@ -114,9 +114,12 @@ var noteController = ( function(app){
         return res.send(codHttp.badRequest)
           .send(new BadRequestResponse('student does not exist', [`student does not exist by id ${idStudent}`]))
 
-      const note = await Note.create({ student, notePad, title, content, isActive: true });
+      const note = await Note.create({ _id, student, notePad, title, content, isActive: true });
 
-      res.send(note)
+      res
+        .peerMiddlerware()
+        .pendenciesMiddleware()
+        .send(note)
 
     } catch (err) {
 
@@ -157,7 +160,10 @@ var noteController = ( function(app){
         , isActive
       }, { new: true })
 
-      res.send(await Note.findById(id));
+      res
+        .peerMiddlerware()
+        .pendenciesMiddleware()
+        .send(await Note.findById(id));
 
     } catch (err) {
 

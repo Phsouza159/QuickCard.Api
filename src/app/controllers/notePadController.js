@@ -114,7 +114,10 @@ const notePadController = ( function(app){
 
             const notePad = await NotePad.create({_id , student , name , isActive : true});
 
-            res.send(notePad)
+            res
+                .peerMiddlerware()
+                .pendenciesMiddleware()
+                .send(notePad)
 
         } catch (err) {
 
@@ -146,7 +149,7 @@ const notePadController = ( function(app){
             const id = req.params.id
             const { Name : name , IsActive : isActive} = req.body
 
-            base.isParametreRequired({name})
+            base.isParametreRequired({name, isActive})
 
             const notePad = await NotePad.findById(id)
 
@@ -160,7 +163,10 @@ const notePadController = ( function(app){
             }, { new: true })
 
 
-            res.send(await NotePad.findById(id));
+            res
+                .peerMiddlerware()
+                .pendenciesMiddleware()
+                .send(await NotePad.findById(id));
 
         } catch (err) {
 

@@ -139,8 +139,9 @@ const cardController = ( function(app) {
             })
 
             res
-                .send(card)
                 .peerMiddlerware()
+                .pendenciesMiddleware()
+                .send(card)
 
         } catch (err) {
 
@@ -213,6 +214,7 @@ const cardController = ( function(app) {
 
             res
                 .peerMiddlerware()
+                .pendenciesMiddleware()
                 .send(await Card.findById(id))  
                 
 
