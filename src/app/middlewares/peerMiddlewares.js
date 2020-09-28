@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
 
     res.peerMiddlerware = function(data) {
         
-        let listeningEntity = ['card']
+        let listeningEntity = ['deck', 'card', 'notepad', 'note']
 
         let url = req.baseUrl.replace(`${pathRoute.base}/` , '')
             , user = req._user
@@ -18,8 +18,7 @@ module.exports = (req, res, next) => {
 
         if(listeningEntity.includes(entity)) {
 
-
-            peerService.notifaction( user.id, typeNotification , {
+            res.isNotificationPeer = peerService.notifaction( user.id, typeNotification , {
                 point : `@${entity}/${req.method}`
                 , message : `${req.method} operation on '${entity}' entity with '${id}' id tracking`
                 , id 
