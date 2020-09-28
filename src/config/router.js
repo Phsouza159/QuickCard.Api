@@ -15,6 +15,13 @@ module.exports = {
             ,get : '/'
         } ,
 
+        pending : {
+            allowanonymous : false,
+            base: `${baseApi}/v1/pending` 
+            ,get : '/'
+            ,delete : '/'
+        } ,
+
         wrtc : {
             base: `/webrtc`,
             get : `/clients`,
