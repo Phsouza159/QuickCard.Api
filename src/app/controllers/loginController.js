@@ -38,11 +38,11 @@ const express = require('express')
 
             if (!student)
                 return res.status(codHttp.badRequest)
-                    .send( new BadRequestResponse(`Invalid password or email`));
+                    .send( new BadRequestResponse(`Invalid email`));
 
             if(!await bcrypt.compare(args.password, student.password))
-                return res.status(codHttp.badRequest)
-                    .send(new BadRequestResponse(`Invalid password or email`));
+                return res.status(codHttp.forbidden)
+                    .send(new BadRequestResponse(`Invalid password`));
 
             student.password = undefined
 
