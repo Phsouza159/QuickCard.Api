@@ -4,6 +4,7 @@ const express = require('express')
     , base = require('./baseController')
     , bcrypt = require('bcryptjs')
     , BadRequestResponse = require('@response/badRequestResponse')
+    , UnauthorizedException = require('@response/unauthorizedException')
     , generetToken = require('@service/generetToken')
     , codHttp = require('@enum/codHttp')
     , router = express.Router()
@@ -42,7 +43,7 @@ const express = require('express')
 
             if(!await bcrypt.compare(args.password, student.password))
                 return res.status(codHttp.forbidden)
-                    .send(new BadRequestResponse(`Invalid password`));
+                    .send(new UnauthorizedException(`Invalid password`));
 
             student.password = undefined
 
