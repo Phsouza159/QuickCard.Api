@@ -33,9 +33,10 @@ const notePadController = ( function(app){
     router.get(`${pathNotePad.get}`, async (req, res) => {
         try {
 
-            const notePads = await NotePad.find()
+            let id = req._user.id
 
-            res.send(notePads);
+            const notePads = await NotePad.find({ 'student': id})
+            res.send(notePads)
 
         } catch (err) {
 
