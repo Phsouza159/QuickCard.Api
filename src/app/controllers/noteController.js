@@ -34,7 +34,9 @@ var noteController = ( function(app){
   router.get(`${pathNote.get}`, async (req, res) => {
     try {
 
-      const notes = await Note.find()
+      let id = req._user.id
+
+      const notes = await Note.find({ 'student': id})
       res.send(notes)
 
     } catch (err) {
