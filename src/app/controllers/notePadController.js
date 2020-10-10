@@ -16,6 +16,59 @@ const notePadController = ( function(app){
     if (!pathNotePad.allowanonymous)
         router.use(authMiddleware);
 
+
+
+  /**
+    * Route to recover notepad info
+    * @route GET /notepad/infoNotepads
+        * @group Deck - Retrieve info notepad 
+    * @operationId retrieveNotepad
+    * @produces application/json
+    * @returns {Any} 200 - List object note
+    * @returns {BadRequestResponse.model} 400 - Object bad request
+    * @returns {object} 401 - Object authorization required
+    * @returns {object} 500 - Objeto internal Serve Erro
+    * @security JWT
+    */
+   router.get(`${pathNotePad.getInfoNotePads}`, async (req, res) => {
+        try {
+
+            const user = req._user
+                , notepads = await NotePad.find({ 'student' : user.id })
+                , notePadInfo = []
+
+            if(notepads)
+            {
+                for(let i = 0; i < notepads.length ; i += 1)
+                {
+                    let notepad = notepads[i]
+                        , notes = await await Note.find({'notePad': notepad.id})
+
+                    //if(!notepad.isActive)
+                    //    continue
+                        
+                    notes.map( note => {
+                        if(note.isActive) {
+                            notePadInfo.push({
+                                _id : note.id
+                                , notePadName : notepad.name
+                                , title : note.title
+                                , content : note.content
+                                , isActive : true
+                            })
+                        }
+                    })
+                }
+            }
+
+        return res.send( notePadInfo )
+
+        } catch (err) {
+
+        return base.error(res , err)
+        }
+    })
+
     //#region OnGet
 
     /**
@@ -79,6 +132,7 @@ const notePadController = ( function(app){
         }
     });
 
+    
     //#endregion
 
     //#region OnPost

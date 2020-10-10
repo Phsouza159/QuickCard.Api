@@ -61,6 +61,7 @@ module.exports = {
             base: `${baseApi}/v1/notepad` 
             ,get : '/' 
             ,getById : '/:id' 
+            ,getInfoNotePads : '/info' 
             ,post : '/'
             ,put : '/:id'
             ,delete : '/:id'
