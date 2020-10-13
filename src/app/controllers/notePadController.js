@@ -87,9 +87,23 @@ const notePadController = ( function(app){
         try {
 
             let id = req._user.id
+                , response = []
 
             const notePads = await NotePad.find({ 'student': id})
-            res.send(notePads)
+            
+            for(let i = 0; i < notePads.length; i += 1) {
+                
+                let item = notePads[i]
+                
+                if(item.IsActive) {
+
+                    item.notes = await await Note.find({'notePad': item._id})
+
+                    response.push(item);
+                }
+            }
+
+            res.send(response)
 
         } catch (err) {
 
