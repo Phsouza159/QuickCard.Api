@@ -105,8 +105,9 @@ var noteController = ( function(app){
 
       console.log(req.body)
 
+      const notePad = await NotePad.findById(idNotePad)
+
       if(idNotePad !== '') {
-          const notePad = await NotePad.findById(idNotePad)
 
           if (!notePad)
             return res.send(codHttp.badRequest)
