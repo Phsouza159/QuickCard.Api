@@ -98,25 +98,28 @@ var noteController = ( function(app){
   router.post(`${pathNote.post}`, async (req, res) => {
     try {
 
-      const { Id : _id , IdNotePad : idNotePad, Content : content, Title : title } = req.body
+      const { Id : _id , IdNotePad : idNotePad, Content : content, Title : title, IsEmptyTitle : isEmptyTitle} = req.body
         , idStudent = req._user.id
         
       base.isParametreRequired({_id, idNotePad, content, title })
 
       console.log(req.body)
 
-      const notePad = await NotePad.findById(idNotePad)
-        , student = await Student.findById(idStudent)
+      if(idNotePad !== '') {
+          const notePad = await NotePad.findById(idNotePad)
 
-      if (!notePad)
-        return res.send(codHttp.badRequest)
-          .send(new BadRequestResponse('Notepad does not exist', [`Notepad does not exist by id ${idNotePad}`]))
+          if (!notePad)
+            return res.send(codHttp.badRequest)
+              .send(new BadRequestResponse('Notepad does not exist', [`Notepad does not exist by id ${idNotePad}`]))
+      }
+      
+      const student = await Student.findById(idStudent)
 
       if (!student)
         return res.send(codHttp.badRequest)
           .send(new BadRequestResponse('student does not exist', [`student does not exist by id ${idStudent}`]))
 
-      const note = await Note.create({ _id, student, notePad, title, content, isActive: true });
+      const note = await Note.create({ _id, student, notePad, title, isEmptyTitle, content, isActive: true });
 
       res
         .peerMiddlerware()
@@ -152,9 +155,9 @@ var noteController = ( function(app){
 
       let id = req.params.id
 
-      const { Content : content, Title : title , IsActive : isActive} = req.body
+      const { Content : content, Title : title, IsEmptyTitle : isEmptyTitle , IsActive : isActive} = req.body
 
-      base.isParametreRequired({ id , content, title , isActive})
+      base.isParametreRequired({ id , content, title , isActive, isEmptyTitle})
 
       await Note.findByIdAndUpdate(id, {
         content

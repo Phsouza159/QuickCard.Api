@@ -21,7 +21,7 @@ const NoteSchema = new mongoose.Schema({
     },
     notePad: {
         type: String,
-        require: true,
+        require: false,
         ref: 'NotePad',
     },
     title: {
@@ -33,6 +33,10 @@ const NoteSchema = new mongoose.Schema({
         required: true,
     },
     isActive : {
+        type: Boolean,
+        required: true,
+    },
+    isEmptyTitle : {
         type: Boolean,
         required: true,
     }
