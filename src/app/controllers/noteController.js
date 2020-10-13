@@ -101,7 +101,7 @@ var noteController = ( function(app){
       const { Id : _id , IdNotePad : idNotePad, Content : content, Title : title, IsEmptyTitle : isEmptyTitle} = req.body
         , idStudent = req._user.id
         
-      base.isParametreRequired({_id, idNotePad, content, title })
+      base.isParametreRequired({_id, idNotePad, content, title , isEmptyTitle})
 
       console.log(req.body)
 
