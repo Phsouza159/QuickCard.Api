@@ -26,7 +26,7 @@ const NoteSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: true,
+        required: false,
     },
     content: {
         type: String,
@@ -38,7 +38,7 @@ const NoteSchema = new mongoose.Schema({
     },
     isEmptyTitle : {
         type: Boolean,
-        required: true,
+        required: false,
     }
 });
 

@@ -89,21 +89,25 @@ const notePadController = ( function(app){
             let id = req._user.id
                 , response = []
 
-            const notePads = await NotePad.find({ 'student': id})
+            const notePads =  await NotePad.find({ 'student': id})
             
             for(let i = 0; i < notePads.length; i += 1) {
                 
                 let item = notePads[i]
                 
-                if(item.IsActive) {
+                console.log(item)
 
-                    item.notes = await await Note.find({'notePad': item._id})
+                if(item.isActive) {
 
-                    response.push(item);
+                    let value = item
+
+                    value.note = await Note.find({'notePad': item._id})
+
+                    response.push(value);
                 }
             }
 
-            res.send(response)
+            return res.send(response)
 
         } catch (err) {
 
@@ -136,7 +140,7 @@ const notePadController = ( function(app){
             const notePad = await NotePad.findById(id)
 
             if(notePad)
-                notePad.note = Note.find({'note' : id})
+                notePad.note = await Note.find({'notePad': notePad._id})
 
             res.send(notePad)
 
@@ -170,8 +174,6 @@ const notePadController = ( function(app){
 
             const { Id : _id , Name: name } = req.body
                 , idStudent = req._user.id
-
-            console.log(req.body)
 
             base.isParametreRequired({ _id, idStudent, name})
             
