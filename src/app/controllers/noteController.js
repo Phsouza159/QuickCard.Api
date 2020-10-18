@@ -105,7 +105,7 @@ var noteController = ( function(app){
 
       const notePad = await NotePad.findById(idNotePad)
 
-      if(idNotePad !== '') {
+      if(idNotePad !== '' && idNotePad !== undefined) {
 
           if (!notePad)
             return res.send(codHttp.badRequest)
@@ -156,12 +156,13 @@ var noteController = ( function(app){
 
       const { Content : content, Title : title, IsEmptyTitle : isEmptyTitle , IsActive : isActive} = req.body
 
-      base.isParametreRequired({ id , content, title , isActive, isEmptyTitle})
+      base.isParametreRequired({ id , content, isActive, isEmptyTitle})
 
       await Note.findByIdAndUpdate(id, {
         content
         , title
         , isActive
+        , isEmptyTitle
       }, { new: true })
 
       res

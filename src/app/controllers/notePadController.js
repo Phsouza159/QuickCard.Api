@@ -8,6 +8,7 @@ const express = require('express')
     , codHttp = require('@enum/codHttp')
     , router = express.Router()
     , pathRoute = require('@config/router')
+    , { NotePadConstatnts } = require('@config/constants') 
     , pathNotePad = pathRoute.v1.notePad
 
 const notePadController = ( function(app){
@@ -55,13 +56,27 @@ const notePadController = ( function(app){
                                 , title : note.title
                                 , content : note.content
                                 , isActive : true
+                                , isEmptyTitle : note.isEmptyTitle
                             })
                         }
                     })
                 }
             }
 
-        return res.send( notePadInfo )
+            await Note.find({'notePad': null , 'student' : user.id}).then( e => e.filter( d => d.isActive).map( note => {
+                let item = {
+                    _id : note.id
+                    , notePadName : NotePadConstatnts.defaultNotePadName
+                    , title : note.title
+                    , content : note.content
+                    , isActive : true
+                    , isEmptyTitle : note.isEmptyTitle
+                }
+                
+                notePadInfo.unshift(item)
+            }))
+
+            return res.send( notePadInfo )
 
         } catch (err) {
 
@@ -89,22 +104,27 @@ const notePadController = ( function(app){
             let id = req._user.id
                 , response = []
 
-            const notePads =  await NotePad.find({ 'student': id})
+            const notePads =  await NotePad.find({ 'student': id}).then( e => e.filter( d => d.isActive))
             
             for(let i = 0; i < notePads.length; i += 1) {
                 
-                let item = notePads[i]
-                
-                console.log(item)
+                let item = notePads[i]  
+                , value = item
 
-                if(item.isActive) {
+                value.note = await Note.find({'notePad': item._id}).then( e => e.filter( d => d.isActive))
+                response.push(value);
+            }
 
-                    let value = item
+            let defaultNotePad = {
+                _id : ''
+                , name : NotePadConstatnts.defaultNotePadName
+                , student : {}
+                , note : await Note.find({'notePad': null , 'student' : id}).then( e => e.filter( d => d.isActive))
+                , isActive : true
+            }
 
-                    value.note = await Note.find({'notePad': item._id})
-
-                    response.push(value);
-                }
+            if(defaultNotePad.note.length > 0) {
+                response.unshift(defaultNotePad)
             }
 
             return res.send(response)
@@ -136,6 +156,20 @@ const notePadController = ( function(app){
         try {
 
             let id = req.params.id
+            , idUser = req._user.id
+
+            if(id === 'undefined' || id === '' || id === undefined) {
+                let defaultNotePad = {
+                    _id : ''
+                    , name : NotePadConstatnts.defaultNotePadName
+                    , student : {}
+                    , note : await Note.find({'notePad': null , 'student' : idUser})//.then( e => e.filter( d => d.isActive))
+                    , isActive : true
+                }
+
+                res.send(defaultNotePad)
+                return
+            }
 
             const notePad = await NotePad.findById(id)
 
