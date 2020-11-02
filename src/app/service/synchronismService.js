@@ -17,25 +17,25 @@ SynchronismServe.prototype.getSync = async idStudent => {
     if(!student)
         throw new BadRequestException('Student is not exist')
 
-    const decks = await Deck.find({ 'student' : student.id })
+    const decks = await Deck.find({ 'student' : student.id }).then( e => e.filter( d => d.IsActive))
 
     if(decks)
     {
         for(let i = 0; i < decks.length ; i += 1)
         {
             let deck = decks[i]
-            deck.card = await Card.find({'deck':deck.id})
+            deck.card = await Card.find({'deck':deck.id}).then( e => e.filter( d => d.IsActive))
         }
     }
 
-    const notePads = await NotePad.find({ 'student' : student.id })
+    const notePads = await NotePad.find({ 'student' : student.id }).then( e => e.filter( d => d.IsActive))
 
     if(notePads)
     {
         for(let i = 0; i < notePads.length ; i += 1)
         {
             let notePad = notePads[i]
-            notePad.note = await Note.find({'notePad':notePad.id})
+            notePad.note = await Note.find({'notePad':notePad.id}).then( e => e.filter( d => d.IsActive))
         }
     }
 
