@@ -19,6 +19,7 @@
     "express-swagger-generator": "^1.1.17",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
+    "moment": "^2.29.1",
     "mongoose": "^5.7.1",
     "nodemon": "^1.19.2",
     "peer": "^0.5.3",

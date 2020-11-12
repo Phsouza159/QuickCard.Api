@@ -9,6 +9,7 @@ const express = require('express')
     , router = express.Router()
     , pathRoute = require('@config/router')
     , pathDeck = pathRoute.v1.deck
+    , moment = require('moment')
     , { peerService , typeClient } = require('@peerServer/peerService')
 
 const deckController = ( function(app){
@@ -38,6 +39,14 @@ const deckController = ( function(app){
             const user = req._user
                 , decks = await Deck.find({ 'student' : user.id })
                 , deckInfo = []
+                , isNextVisibleCard = (card) => {
+
+                    let date = moment(card.dateNextView)
+                    , nowDate = moment()
+
+                    // true - data is past
+                    return nowDate > date
+                }
 
             if(decks)
             {
@@ -54,6 +63,7 @@ const deckController = ( function(app){
                         if(card.isActive) {
                             cardsInfo.push({
                                 isReviewed : card.isReviewed
+                                , dateNextView : card.dateNextView
                             })
                         }
                     })
@@ -64,6 +74,7 @@ const deckController = ( function(app){
                         , count : cardsInfo.length
                         , isReviewed : cardsInfo.filter( e => e.isReviewed).length
                         , isNotReviewed : cardsInfo.filter( e => !e.isReviewed).length
+                        , isCardsReviewMoment : cardsInfo.filter( e => !e.isReviewed).filter( e => isNextVisibleCard(e)).length
                         , isActive : true
                     })
                 }

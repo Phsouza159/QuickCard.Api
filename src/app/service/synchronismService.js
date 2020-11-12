@@ -17,25 +17,61 @@ SynchronismServe.prototype.getSync = async idStudent => {
     if(!student)
         throw new BadRequestException('Student is not exist')
 
-    const decks = await Deck.find({ 'student' : student.id })
+    let _decks = await Deck.find({ 'student' : student.id })
+        , decks =  []
 
-    if(decks)
+        _decks.map( deck => {
+            if(deck.isActive) {
+
+                decks.push(deck)
+            }
+        })
+
+    if(decks.length > 0)
     {
+        let cards = []
+
         for(let i = 0; i < decks.length ; i += 1)
         {
             let deck = decks[i]
-            deck.card = await Card.find({'deck':deck.id})
+                , _cards = await Card.find({'deck':deck.id})
+                
+                _cards.map( card => {
+                    if(card.isActive) {
+                        cards.push(card)
+                    }
+                })
+
+            deck.card = cards
+            cards = []
         }
     }
 
-    const notePads = await NotePad.find({ 'student' : student.id })
+    let _notePads = await NotePad.find({ 'student' : student.id })
+        , notePads = []
 
-    if(notePads)
+        _notePads.map( notePad => {
+            if(notePad.isActive){
+                notePads.push(notePad)
+            }
+        })
+
+    if(notePads.length > 0)
     {
+        let notes = []
+
         for(let i = 0; i < notePads.length ; i += 1)
         {
             let notePad = notePads[i]
-            notePad.note = await Note.find({'notePad':notePad.id})
+                , _note = await Note.find({'notePad':notePad.id})
+
+                _note.map( note => {
+                    if(note.isActive) {
+                        notes.push(note)
+                    }
+                })
+            notePad.note = notes
+            notes = []
         }
     }
 
